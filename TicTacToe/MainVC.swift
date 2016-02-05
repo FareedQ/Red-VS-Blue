@@ -82,11 +82,11 @@ extension MainVC {
         case .WinnerO:
             alertMessage(title: "Game Over", message: "Red Player Wins")
             break
-        case .Error:
-            alertMessage(title: "Error", message: "You broke the system!!")
-            break
         case .EndOfTurns:
             alertMessage(title:"Game Over", message: "No one wins")
+            break
+        case .Error:
+            alertMessage(title: "Error", message: "You broke the system!!")
             break
         default:
             break

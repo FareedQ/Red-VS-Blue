@@ -1,16 +1,18 @@
 {
-  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "07BDE4BC408B281BD27649993A24816B3CE19583",
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "DC53CAD3504D1810076280E8A1566827A25703D8",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
 
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
-    "07BDE4BC408B281BD27649993A24816B3CE19583" : 0,
-    "2C4A33281CA36981C1116350F52EB721CCB29727" : 0
+    "2C4A33281CA36981C1116350F52EB721CCB29727" : 0,
+    "DC53CAD3504D1810076280E8A1566827A25703D8" : 0,
+    "07BDE4BC408B281BD27649993A24816B3CE19583" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "2CBB7CEA-5EE9-4D49-ACC0-278EAB6E0CCB",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "07BDE4BC408B281BD27649993A24816B3CE19583" : "TicTacToe\/",
-    "2C4A33281CA36981C1116350F52EB721CCB29727" : ""
+    "2C4A33281CA36981C1116350F52EB721CCB29727" : "",
+    "DC53CAD3504D1810076280E8A1566827A25703D8" : "Red%20Vs%20Blue\/",
+    "07BDE4BC408B281BD27649993A24816B3CE19583" : "TicTacToe\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "TicTacToe",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
@@ -25,6 +27,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/FareedQ\/Tick-Tack-Toe.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2C4A33281CA36981C1116350F52EB721CCB29727"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/FareedQ\/Red-VS-Blue.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DC53CAD3504D1810076280E8A1566827A25703D8"
     }
   ]
 }
