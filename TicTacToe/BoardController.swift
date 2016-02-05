@@ -92,25 +92,25 @@ class BoardDelegate: NSObject {
     func resetBoard(){
         whoseTurn = .X
         turnCount = 0
-        
-        for tileId in memoryBoard.allTiles {
-            memoryBoard.board[tileId]?.player = .None
-        }
+        memoryBoard = Board(board: [:])
         visualBoard?.reloadData()
     }
     
-    func setupTilesInMemory(tile:SelectionCell, indexPathRow:Int){
-        if(indexPathRow%tilesPerRow == 0 || indexPathRow%tilesPerRow == 2){
-            if(indexPathRow/tilesPerRow < 1 || indexPathRow/tilesPerRow > tilesPerRow-1){
-                memoryBoard.board[indexPathRow] = Tile(type: .Corner, player: .None)
+    func setupTilesInMemory(tile:SelectionCell){
+        guard let tileId = tile.id else {return}
+        
+        if(tileId%tilesPerRow == 0 || tileId%tilesPerRow == 2){
+            if(tileId/tilesPerRow < 1 || tileId/tilesPerRow > tilesPerRow-1){
+                memoryBoard.board[tileId] = Tile(type: .Corner, player: .None)
             }
-            memoryBoard.board[indexPathRow] = Tile(type: .Edge, player: .None)
+            memoryBoard.board[tileId] = Tile(type: .Edge, player: .None)
         }
-        memoryBoard.board[indexPathRow] = Tile(type: .Center, player: .None)
+        memoryBoard.board[tileId] = Tile(type: .Center, player: .None)
     }
     
     //MARK: PlayGame
     func executeSelection(thisCell:SelectionCell) -> WinResults {
+        
         collectTile(thisCell)
         thisCell.animateTextCommingIn()
         let stateOfGame = isGameOver()
@@ -152,6 +152,11 @@ class BoardDelegate: NSObject {
         }
     }
     
+    func letComputerHaveATurn(){
+        if BoardDelegate.sharedInstance.computerPlayerIsActive && BoardDelegate.sharedInstance.whoseTurn == .O {
+            BoardDelegate.sharedInstance.computerSelection()
+        }
+    }
     
     
     func computerSelection(){
