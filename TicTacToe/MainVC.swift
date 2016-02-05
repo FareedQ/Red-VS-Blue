@@ -33,6 +33,7 @@ class MainVC: UIViewController {
     }
 }
 
+//MARK: CollectionView
 extension MainVC: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -65,14 +66,8 @@ extension MainVC: UICollectionViewDataSource, UICollectionViewDelegate {
     }
 }
 
+//MARK: Alerts
 extension MainVC {
-    func playerSelection(indexPath:NSIndexPath){
-        guard let thisCell = collectionView.cellForItemAtIndexPath(indexPath) as? SelectionCell else {return}
-        if (thisCell.imageView.image == nil) {
-            let results = BoardDelegate.sharedInstance.executeSelection(thisCell)
-            displayAlertBasedOnWinResults(results)
-        }
-    }
     
     func displayAlertBasedOnWinResults(results:WinResults) {
         switch results {
@@ -93,12 +88,6 @@ extension MainVC {
         }
     }
     
-    func setupTilesInCollectionView(tile:SelectionCell, indexPathRow:Int){
-        tile.imageView.image = nil
-        tile.layer.borderColor = UIColor.blackColor().CGColor
-        tile.layer.borderWidth = 1
-        tile.id = convertIndexPathRowToTileId(indexPathRow)
-    }
     
     //Needed to show alerts
     func alertMessage(title title:String, message:String){
@@ -110,6 +99,33 @@ extension MainVC {
         alert.addAction(okay)
         self.presentViewController(alert, animated: true, completion: nil)
     }
+}
+
+//MARK: LookPretty
+extension MainVC {
+    
+    func setupTilesInCollectionView(tile:SelectionCell, indexPathRow:Int){
+        tile.imageView.image = nil
+        tile.layer.borderColor = UIColor.blackColor().CGColor
+        tile.layer.borderWidth = 1
+        tile.id = convertIndexPathRowToTileId(indexPathRow)
+    }
+    
+}
+
+//MARK: BoardController
+//Aread needs to be moved into board controller
+extension MainVC {
+    func playerSelection(indexPath:NSIndexPath){
+        guard let thisCell = collectionView.cellForItemAtIndexPath(indexPath) as? SelectionCell else {return}
+        if (thisCell.imageView.image == nil) {
+            let results = BoardDelegate.sharedInstance.executeSelection(thisCell)
+            displayAlertBasedOnWinResults(results)
+        }
+    }
+}
+
+extension MainVC {
     
     //Used to make the code more readable
     func convertIndexPathRowToTileId(indexPathRow:Int) -> String {
