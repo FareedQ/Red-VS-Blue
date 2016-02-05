@@ -13,7 +13,7 @@ class BoardDelegate: NSObject {
     
     //MARK: Parameters
     private let memoryBoard = Board()
-    private let HAL = ArtificialIntelligence()
+    private let HAL9000 = ArtificialIntelligence()
     weak var controllingView:MainVC?
     weak var visualBoard:UICollectionView?
     
@@ -151,7 +151,7 @@ class BoardDelegate: NSObject {
         
         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
             BoardDelegate.sharedInstance.lockSelectionForComputersTurn = false
-            let computersChoice = self.HAL.aggressivelyTakeTileSelection()
+            let computersChoice = self.HAL9000.aggressivelyTakeTileSelection()
             guard let actualtile = myVisualBoard.cellForItemAtIndexPath(NSIndexPath(forRow: computersChoice, inSection: 0)) as? SelectionCell else { return }
             let results = BoardDelegate.sharedInstance.executeSelection(actualtile)
             myControllingView.displayAlertBasedOnWinResults(results)
