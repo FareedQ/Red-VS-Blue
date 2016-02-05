@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "07BDE4BC408B281BD27649993A24816B3CE19583",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "07BDE4BC408B281BD27649993A24816B3CE19583" : 0,
+    "2C4A33281CA36981C1116350F52EB721CCB29727" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "2CBB7CEA-5EE9-4D49-ACC0-278EAB6E0CCB",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "07BDE4BC408B281BD27649993A24816B3CE19583" : "TicTacToe\/",
+    "2C4A33281CA36981C1116350F52EB721CCB29727" : ""
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "TicTacToe",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "TicTacToe.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/FareedQ\/TicTacToe.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "07BDE4BC408B281BD27649993A24816B3CE19583"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/FareedQ\/Tick-Tack-Toe.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2C4A33281CA36981C1116350F52EB721CCB29727"
+    }
+  ]
+}
