@@ -93,6 +93,16 @@ class BoardDelegate: NSObject {
         visualBoard?.reloadData()
     }
     
+    func setupTilesInMemory(tile:SelectionCell, indexPathRow:Int){
+        if(indexPathRow%3 == 0 || indexPathRow%3 == 2){
+            if(indexPathRow/3 < 1 || indexPathRow/3 > 2){
+                memoryBoard.board[indexPathRow] = Tile(type: .Corner, player: .None)
+            }
+            memoryBoard.board[indexPathRow] = Tile(type: .Edge, player: .None)
+        }
+        memoryBoard.board[indexPathRow] = Tile(type: .Center, player: .None)
+    }
+    
     //MARK: PlayGame
     func executeSelection(thisCell:SelectionCell) -> WinResults {
         collectTile(thisCell)

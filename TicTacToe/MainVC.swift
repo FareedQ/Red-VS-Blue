@@ -42,7 +42,8 @@ extension MainVC: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         guard let thisCell = collectionView.dequeueReusableCellWithReuseIdentifier("selectionCell", forIndexPath: indexPath) as? SelectionCell else {return UICollectionViewCell() }
-        setupTilesInCollectionView(thisCell, indexPathRow: indexPath.row)
+        setupTilesToLookProper(thisCell, indexPathRow: indexPath.row)
+        BoardDelegate.sharedInstance.setupTilesInMemory(thisCell, indexPathRow: indexPath.row)
         return thisCell
     }
     
@@ -99,7 +100,7 @@ extension MainVC {
 //MARK: LookPretty
 extension MainVC {
     
-    func setupTilesInCollectionView(tile:SelectionCell, indexPathRow:Int){
+    func setupTilesToLookProper(tile:SelectionCell, indexPathRow:Int){
         tile.imageView.image = nil
         tile.layer.borderColor = UIColor.blackColor().CGColor
         tile.layer.borderWidth = 1
