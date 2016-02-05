@@ -12,16 +12,16 @@ class BoardDelegate: NSObject {
     static let sharedInstance = BoardDelegate()
     
     //MARK: Parameters
-    private let memoryBoard = Board()
+    private var memoryBoard = Board(board: [:])
     private let HAL9000 = ArtificialIntelligence()
     weak var controllingView:MainVC?
     weak var visualBoard:UICollectionView?
     
     var whoseTurn:Player = .X
     var turnCount = 0
-    
-    var computerPlayerIsActive = true
     var lockSelectionForComputersTurn = false
+    var computerPlayerIsActive = true
+    var tilesPerRow = 4
     
     var winningConditions = [
         [0,1,2],
@@ -44,6 +44,12 @@ class BoardDelegate: NSObject {
                 }
             }
             return returnTiles
+        }
+    }
+    
+    var tilesCount: Int {
+        get{
+            return tilesPerRow*tilesPerRow
         }
     }
     
@@ -94,8 +100,8 @@ class BoardDelegate: NSObject {
     }
     
     func setupTilesInMemory(tile:SelectionCell, indexPathRow:Int){
-        if(indexPathRow%3 == 0 || indexPathRow%3 == 2){
-            if(indexPathRow/3 < 1 || indexPathRow/3 > 2){
+        if(indexPathRow%tilesPerRow == 0 || indexPathRow%tilesPerRow == 2){
+            if(indexPathRow/tilesPerRow < 1 || indexPathRow/tilesPerRow > tilesPerRow-1){
                 memoryBoard.board[indexPathRow] = Tile(type: .Corner, player: .None)
             }
             memoryBoard.board[indexPathRow] = Tile(type: .Edge, player: .None)

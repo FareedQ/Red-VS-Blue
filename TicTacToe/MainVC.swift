@@ -16,8 +16,6 @@ class MainVC: UIViewController {
     
     //MARK IBOutlets
     @IBOutlet weak var collectionView: UICollectionView!
-    let myBoard = Board()
-    
     @IBAction func prepareForUnwind(segue:UIStoryboardSegue) {
     }
     
@@ -37,7 +35,7 @@ class MainVC: UIViewController {
 extension MainVC: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return myBoard.board.count
+        return BoardDelegate.sharedInstance.tilesCount
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -57,7 +55,7 @@ extension MainVC: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-            let mySize = CGSize(width: collectionView.bounds.size.width/3, height: collectionView.bounds.size.width/3)
+            let mySize = CGSize(width: collectionView.bounds.size.width/CGFloat(BoardDelegate.sharedInstance.tilesPerRow), height: collectionView.bounds.size.width/CGFloat(BoardDelegate.sharedInstance.tilesPerRow))
             return mySize
     }
 }
