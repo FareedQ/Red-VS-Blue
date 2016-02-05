@@ -12,7 +12,7 @@ class ArtificialIntelligence: NSObject {
     //This extention is to create an artificial intelligent player to compete with
     
     //Checks if a win can occur and react accordingly
-    func aggressivelyTakeTileSelection() -> String {
+    func aggressivelyTakeTileSelection() -> Int {
         for winCondition in BoardDelegate.sharedInstance.winningConditions {
             
             let tileCombination = BoardDelegate.sharedInstance.whoHasClaimedThisSet(winCondition)
@@ -29,15 +29,15 @@ class ArtificialIntelligence: NSObject {
     }
     
     //Chooses the center tile and the corner tiles if avaliable
-    func greedyTileSelection() -> String {
+    func greedyTileSelection() -> Int {
         
         var tileId = BoardDelegate.sharedInstance.getARandomCenterTile()
         
-        if (tileId.isEmpty) {
+        if (tileId == -1) {
             tileId = BoardDelegate.sharedInstance.getARandomCornerTile()
         }
         
-        if (tileId.isEmpty) {
+        if (tileId == -1) {
             tileId = BoardDelegate.sharedInstance.getARandomTile()
         }
         

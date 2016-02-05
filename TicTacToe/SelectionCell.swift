@@ -13,7 +13,7 @@ class SelectionCell: UICollectionViewCell {
     
     @IBOutlet weak var imageView: UIImageView!
     
-    var id:String?
+    var id:Int?
         
     func animateTextCommingIn(){
         imageView.alpha = 0

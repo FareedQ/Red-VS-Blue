@@ -51,11 +51,6 @@ extension MainVC: UICollectionViewDataSource, UICollectionViewDelegate {
         
         //Player's selection
         playerSelection(indexPath)
-        
-        //Computer's selection
-        if BoardDelegate.sharedInstance.computerPlayerIsActive && BoardDelegate.sharedInstance.whoseTurn == .O {
-            BoardDelegate.sharedInstance.computerSelection()
-        }
     }
     
     func collectionView(collectionView: UICollectionView,
@@ -108,7 +103,7 @@ extension MainVC {
         tile.imageView.image = nil
         tile.layer.borderColor = UIColor.blackColor().CGColor
         tile.layer.borderWidth = 1
-        tile.id = convertIndexPathRowToTileId(indexPathRow)
+        tile.id = indexPathRow
     }
     
 }
@@ -117,54 +112,17 @@ extension MainVC {
 //Aread needs to be moved into board controller
 extension MainVC {
     func playerSelection(indexPath:NSIndexPath){
-        guard let thisCell = collectionView.cellForItemAtIndexPath(indexPath) as? SelectionCell else {return}
-        if (thisCell.imageView.image == nil) {
+        if (BoardDelegate.sharedInstance.whoHasClaimed(indexPath.row) == .None) {
+            
+            guard let thisCell = collectionView.cellForItemAtIndexPath(indexPath) as? SelectionCell else {return}
+            
             let results = BoardDelegate.sharedInstance.executeSelection(thisCell)
+            
             displayAlertBasedOnWinResults(results)
         }
-    }
-}
-
-extension MainVC {
-    
-    //Used to make the code more readable
-    func convertIndexPathRowToTileId(indexPathRow:Int) -> String {
-        switch indexPathRow {
-        case 0...2:
-            return "A\(indexPathRow+1)"
-        case 3...5:
-            return "B\((indexPathRow%3)+1)"
-        case 6...9:
-            return "C\((indexPathRow%3)+1)"
-        default:
-            return ""
+        
+        if BoardDelegate.sharedInstance.computerPlayerIsActive && BoardDelegate.sharedInstance.whoseTurn == .O {
+            BoardDelegate.sharedInstance.computerSelection()
         }
     }
-    
-    
-    func convertTileIdToIndexPathRow(tileId:String) -> Int {
-        switch tileId {
-        case "A1":
-            return 0
-        case "A2":
-            return 1
-        case "A3":
-            return 2
-        case "B1":
-            return 3
-        case "B2":
-            return 4
-        case "B3":
-            return 5
-        case "C1":
-            return 6
-        case "C2":
-            return 7
-        case "C3":
-            return 8
-        default:
-            return 0
-        }
-    }
-
 }

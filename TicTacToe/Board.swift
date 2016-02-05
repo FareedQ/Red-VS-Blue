@@ -11,19 +11,19 @@ import UIKit
 class Board: NSObject {
     //MARK: DataTypes
     
-    var board: [String:Tile]
+    var board: [Int:Tile]
     
     override init(){
         board = [
-            "A1":A1,
-            "A2":A2,
-            "A3":A3,
-            "B1":B1,
-            "B2":B2,
-            "B3":B3,
-            "C1":C1,
-            "C2":C2,
-            "C3":C3]
+            0:A1,
+            1:A2,
+            2:A3,
+            3:B1,
+            4:B2,
+            5:B3,
+            6:C1,
+            7:C2,
+            8:C3]
     }
     
     let A1 = Tile(type: .Corner, player: .None)
@@ -39,9 +39,9 @@ class Board: NSObject {
     
     //MARK CalculatedVariables
     
-    var centerTiles: [String] {
+    var centerTiles: [Int] {
         get {
-            var returnTiles = [String]()
+            var returnTiles = [Int]()
             for mytile in board {
                 if mytile.1.type == .Center {
                     returnTiles.append(mytile.0)
@@ -51,9 +51,9 @@ class Board: NSObject {
         }
     }
     
-    var cornerTiles: [String] {
+    var cornerTiles: [Int] {
         get {
-            var returnTiles = [String]()
+            var returnTiles = [Int]()
             for mytile in board {
                 if mytile.1.type == .Corner {
                     returnTiles.append(mytile.0)
@@ -63,9 +63,9 @@ class Board: NSObject {
         }
     }
     
-    var allTiles: [String] {
+    var allTiles: [Int] {
         get {
-            var returnTiles = [String]()
+            var returnTiles = [Int]()
             for mytile in board {
                 returnTiles.append(mytile.0)
             }

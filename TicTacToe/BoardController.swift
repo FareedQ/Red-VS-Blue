@@ -24,20 +24,20 @@ class BoardDelegate: NSObject {
     var lockSelectionForComputersTurn = false
     
     var winningConditions = [
-        ["A1","A2","A3"],
-        ["B1","B2","B3"],
-        ["C1","C2","C3"],
-        ["A1","B2","C3"],
-        ["A3","B2","C1"],
-        ["A1","B1","C1"],
-        ["A2","B2","C2"],
-        ["A3","B3","C3"]]
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,4,8],
+        [2,4,6],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8]]
     
     
     //MARK: CalculatedParameters
-    var collectedTiles: [String]{
+    var collectedTiles: [Int]{
         get {
-            var returnTiles = [String]()
+            var returnTiles = [Int]()
             for mytile in memoryBoard.board {
                 if mytile.1.player != .None {
                     returnTiles.append(mytile.0)
@@ -47,7 +47,36 @@ class BoardDelegate: NSObject {
         }
     }
     
-    //MARK: Functions
+    //MARK: FuncitonalParameters
+    func isACenterTileAvaliable() -> Bool {
+        for tile in memoryBoard.centerTiles {
+            if !collectedTiles.contains(tile) { return true }
+        }
+        return false
+    }
+    
+    func isACornerTileAvaliable() -> Bool {
+        for tile in memoryBoard.cornerTiles {
+            if !collectedTiles.contains(tile) { return true }
+        }
+        return false
+    }
+    
+    
+    func whoHasClaimed(tileId:Int) -> Player {
+        guard let tile = memoryBoard.board[tileId] else {return .None}
+        return tile.player
+    }
+    
+    func whoHasClaimedThisSet(tileIdArray:[Int]) -> [Player] {
+        var playerArray = [Player]()
+        for tileId in tileIdArray {
+            playerArray.append(whoHasClaimed(tileId))
+        }
+        return playerArray
+    }
+    
+    //MARK: BoardMaintence
     func setup(controllingView:MainVC){
         self.controllingView = controllingView
         self.visualBoard = controllingView.visualBoard
@@ -64,20 +93,7 @@ class BoardDelegate: NSObject {
         visualBoard?.reloadData()
     }
     
-    func isACenterTileAvaliable() -> Bool {
-        for tile in memoryBoard.centerTiles {
-            if !collectedTiles.contains(tile) { return true }
-        }
-        return false
-    }
-    
-    func isACornerTileAvaliable() -> Bool {
-        for tile in memoryBoard.cornerTiles {
-            if !collectedTiles.contains(tile) { return true }
-        }
-        return false
-    }
-    
+    //MARK: PlayGame
     func executeSelection(thisCell:SelectionCell) -> WinResults {
         collectTile(thisCell)
         thisCell.animateTextCommingIn()
@@ -120,6 +136,29 @@ class BoardDelegate: NSObject {
         }
     }
     
+    
+    
+    func computerSelection(){
+        
+        guard let myVisualBoard = self.visualBoard else {return}
+        guard let myControllingView = self.controllingView else {return}
+        
+        
+        BoardDelegate.sharedInstance.lockSelectionForComputersTurn = true
+        let seconds = 1.0
+        let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
+        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        
+        dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+            BoardDelegate.sharedInstance.lockSelectionForComputersTurn = false
+            let computersChoice = self.HAL.aggressivelyTakeTileSelection()
+            guard let actualtile = myVisualBoard.cellForItemAtIndexPath(NSIndexPath(forRow: computersChoice, inSection: 0)) as? SelectionCell else { return }
+            let results = BoardDelegate.sharedInstance.executeSelection(actualtile)
+            myControllingView.displayAlertBasedOnWinResults(results)
+        })
+    }
+
+    //MARK:EndGame
     func isGameOver() -> WinResults {
         if isWinner() {
             switch whoseTurn {
@@ -143,14 +182,14 @@ class BoardDelegate: NSObject {
     }
     
     func isWinner() -> Bool {
-        var playersCollectedArray = [String]()
+        var playersCollectedTiles = [Int]()
         for tileId in collectedTiles {
             guard let tile = memoryBoard.board[tileId] else {return false}
             if tile.player == whoseTurn {
-                playersCollectedArray.append(tileId)
+                playersCollectedTiles.append(tileId)
             }
         }
-        let playercollectedSet = Set(playersCollectedArray)
+        let playercollectedSet = Set(playersCollectedTiles)
         
         for winCondition in winningConditions {
             let winConditionSet = Set(winCondition)
@@ -166,8 +205,8 @@ class BoardDelegate: NSObject {
         return false
     }
     
-    //Chooses a random selected tile
-    func aRandomTile(allCollectedTiles:[String], var rangeToSelectFrom:[String]) -> String {
+    //MARK: RandomTileSelection
+    func aRandomTile(allCollectedTiles:[Int], var rangeToSelectFrom:[Int]) -> Int {
         
         var randomIndex = Int(arc4random_uniform(UInt32(rangeToSelectFrom.count)))
         while allCollectedTiles.contains(rangeToSelectFrom[randomIndex]) {
@@ -176,97 +215,22 @@ class BoardDelegate: NSObject {
         return rangeToSelectFrom[randomIndex]
     }
     
-    func getARandomCenterTile() -> String {
+    func getARandomCenterTile() -> Int {
         if BoardDelegate.sharedInstance.isACenterTileAvaliable() {
             return aRandomTile(collectedTiles, rangeToSelectFrom:memoryBoard.centerTiles)
         }
-        return ""
+        return -1
     }
     
-    func getARandomCornerTile() -> String {
+    func getARandomCornerTile() -> Int {
         if BoardDelegate.sharedInstance.isACornerTileAvaliable() {
-            return BoardDelegate.sharedInstance.aRandomTile(BoardDelegate.sharedInstance.collectedTiles, rangeToSelectFrom:BoardDelegate.sharedInstance.memoryBoard.cornerTiles)
+            return aRandomTile(BoardDelegate.sharedInstance.collectedTiles, rangeToSelectFrom:BoardDelegate.sharedInstance.memoryBoard.cornerTiles)
         }
-        return ""
+        return -1
     }
     
-    func getARandomTile() -> String {
-        return BoardDelegate.sharedInstance.aRandomTile(BoardDelegate.sharedInstance.collectedTiles, rangeToSelectFrom:BoardDelegate.sharedInstance.memoryBoard.allTiles)
-    }
-    
-    func whoHasClaimed(tileId:String) -> Player {
-        guard let tile = BoardDelegate.sharedInstance.memoryBoard.board[tileId] else {return .None}
-        return tile.player
-    }
-    
-    func whoHasClaimedThisSet(tileIdArray:[String]) -> [Player] {
-        var playerArray = [Player]()
-        for tileId in tileIdArray {
-            playerArray.append(whoHasClaimed(tileId))
-        }
-        return playerArray
-    }
-    
-    func computerSelection(){
-        
-        guard let myVisualBoard = self.visualBoard else {return}
-        guard let myControllingView = self.controllingView else {return}
-        
-        
-        BoardDelegate.sharedInstance.lockSelectionForComputersTurn = true
-        let seconds = 1.0
-        let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
-        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-        
-        dispatch_after(dispatchTime, dispatch_get_main_queue(), {
-            BoardDelegate.sharedInstance.lockSelectionForComputersTurn = false
-            let indexPathRow = self.convertTileIdToIndexPathRow(self.HAL.aggressivelyTakeTileSelection())
-            guard let actualtile = myVisualBoard.cellForItemAtIndexPath(NSIndexPath(forRow: indexPathRow, inSection: 0)) as? SelectionCell else { return }
-            let results = BoardDelegate.sharedInstance.executeSelection(actualtile)
-            myControllingView.displayAlertBasedOnWinResults(results)
-        })
-    }
-    
-    
-    
-    //Used to make the code more readable
-    func convertIndexPathRowToTileId(indexPathRow:Int) -> String {
-        switch indexPathRow {
-        case 0...2:
-            return "A\(indexPathRow+1)"
-        case 3...5:
-            return "B\((indexPathRow%3)+1)"
-        case 6...9:
-            return "C\((indexPathRow%3)+1)"
-        default:
-            return ""
-        }
-    }
-    
-    
-    func convertTileIdToIndexPathRow(tileId:String) -> Int {
-        switch tileId {
-        case "A1":
-            return 0
-        case "A2":
-            return 1
-        case "A3":
-            return 2
-        case "B1":
-            return 3
-        case "B2":
-            return 4
-        case "B3":
-            return 5
-        case "C1":
-            return 6
-        case "C2":
-            return 7
-        case "C3":
-            return 8
-        default:
-            return 0
-        }
+    func getARandomTile() -> Int {
+        return aRandomTile(BoardDelegate.sharedInstance.collectedTiles, rangeToSelectFrom:BoardDelegate.sharedInstance.memoryBoard.allTiles)
     }
 }
 
