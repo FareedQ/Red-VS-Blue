@@ -10,10 +10,12 @@ import UIKit
 
 class SettingsVC: UIViewController {
 
+    weak var myMainVC:MainVC?
+    
     @IBOutlet weak var soundSwitchOutlet: UISwitch!
     @IBOutlet weak var computerSwitchOutlet: UISwitch!
-    
     @IBOutlet weak var tilesSegmentedOutlet: UISegmentedControl!
+    
     var resetBoard = false
     
     override func viewDidLoad() {
@@ -35,6 +37,8 @@ class SettingsVC: UIViewController {
         default:
             break
         }
+        
+        setupGuestureRecongizers()
     }
 
     @IBAction func selectTiles(sender: UISegmentedControl) {
@@ -77,6 +81,34 @@ class SettingsVC: UIViewController {
         if segue.identifier == "exitSegue" && resetBoard {
             BoardDelegate.sharedInstance.resetBoard()
         }
+    }
+    
+    //MARK: GuestureRecongizer
+    func setupGuestureRecongizers(){
+        
+        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: "pullSettings:")
+        gestureRecognizer.minimumPressDuration = 0
+        self.view.addGestureRecognizer(gestureRecognizer)
+    }
+    
+    var touchStart = CGPoint()
+    var openSettings = false
+    func pullSettings(sender: UIPanGestureRecognizer){
+        let touch = sender.locationInView(view)
+        
+        switch sender.state {
+        case .Began:
+                touchStart = touch
+            break
+        case .Ended:
+            if touch.x > touchStart.x + 10 {
+                self.myMainVC!.animateClosingSetting()
+            }
+            break
+        default:
+            break
+        }
+        
     }
     
 }

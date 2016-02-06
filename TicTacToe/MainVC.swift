@@ -11,24 +11,104 @@ import AudioToolbox
 
 class MainVC: UIViewController {
     
-    
+    @IBOutlet weak var settingsButtonOutlet: UIButton!
     @IBOutlet weak var visualBoard: UICollectionView!
+    weak var mySettingVC:SettingsVC?
     
     //MARK IBOutlets
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBAction func prepareForUnwind(segue:UIStoryboardSegue) {
     }
+    @IBOutlet weak var settingMenuContraint: NSLayoutConstraint!
     
-    //MARK overrideUIViewControllerFunctions
+    //MARK: Override UIViewController Functions
     override func viewDidLoad() {
         super.viewDidLoad()
         BoardDelegate.sharedInstance.setup(self)
+        setupGuestureRecongizers()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         NSLog("mainVC did recieve a memory warning", "")
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "segueSettings" {
+            guard let tempVC = segue.destinationViewController as? SettingsVC else {return}
+            mySettingVC = tempVC
+            mySettingVC?.myMainVC = self
+        }
+    }
+    
+    //MARK: GuestureRecongizer
+    func setupGuestureRecongizers(){
+        
+        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: "pullSettings:")
+        gestureRecognizer.minimumPressDuration = 0
+        self.view.addGestureRecognizer(gestureRecognizer)
+    }
+    
+    var touchedSettings = false
+    var openSettings = false
+    var beginningTouch = CGPoint()
+    func pullSettings(sender: UIPanGestureRecognizer){
+        let touch = sender.locationInView(view)
+        
+        switch sender.state {
+        case .Began:
+            if settingsButtonOutlet.frame.contains(touch) {
+                touchedSettings = true
+                beginningTouch = touch
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    self.settingMenuContraint.constant = -40
+                    self.view.layoutIfNeeded()
+                })
+            }
+            if visualBoard.frame.contains(touch) {
+                let locationInCollectionView = sender.locationInView(visualBoard)
+                guard let indexPath = visualBoard.indexPathForItemAtPoint(locationInCollectionView) else {return}
+                selectItemOnBoard(indexPath)
+            }
+            break
+        case .Changed:
+            if touchedSettings {
+                settingMenuContraint.constant = (touch.x - view.frame.width)
+                if touch.x < beginningTouch.x {
+                    openSettings = true
+                } else {
+                    openSettings = false
+                }
+            }
+            break
+        case .Ended:
+            if touchedSettings {
+                touchedSettings = false
+                if openSettings {
+                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        self.settingMenuContraint.constant = -self.view.frame.width
+                        self.view.layoutIfNeeded()
+                    })
+                } else {
+                    UIView.animateWithDuration(0.2, animations: { () -> Void in
+                        self.settingMenuContraint.constant = 0
+                        self.view.layoutIfNeeded()
+                    })
+                }
+                openSettings = false
+            }
+            break
+        default:
+            break
+        }
+        
+    }
+    func animateClosingSetting() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.settingMenuContraint.constant = 0
+            self.view.layoutIfNeeded()
+        })
     }
     
     //MARK: CollectionView
@@ -51,17 +131,22 @@ class MainVC: UIViewController {
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        selectItemOnBoard(indexPath)
+        
+    }
+    
+    //Needed to have this function called directly after guesture recongizers were added to the page
+    func selectItemOnBoard(indexPath:NSIndexPath){
         if BoardDelegate.sharedInstance.lockSelectionForComputersTurn {return}
         
         if (BoardDelegate.sharedInstance.whoHasClaimed(indexPath.row) == .None) {
-            guard let thisCell = collectionView.cellForItemAtIndexPath(indexPath) as? SelectionCell else {return}
+            guard let thisCell = visualBoard.cellForItemAtIndexPath(indexPath) as? SelectionCell else {return}
             
             let results = BoardDelegate.sharedInstance.executeSelection(thisCell)
             displayAlertBasedOnWinResults(results)
         }
         
         BoardDelegate.sharedInstance.letComputerHaveATurn()
-        
     }
     
     func collectionView(collectionView: UICollectionView,
