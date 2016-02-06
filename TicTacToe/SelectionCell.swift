@@ -14,7 +14,17 @@ class SelectionCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     
     var id:Int?
-        
+    var tile:Tile?
+    
+    var neighbourTopLeft: Int?
+    var neighbourTopMiddle: Int?
+    var neighbourTopRight: Int?
+    var neighbourMiddleLeft: Int?
+    var neighbourMiddleRight: Int?
+    var neighbourBottomLeft: Int?
+    var neighbourBottomMiddle: Int?
+    var neighbourBottomRight: Int?
+    
     func animateTextCommingIn(){
         imageView.alpha = 0
         imageView.transform = CGAffineTransformMakeScale(0.3, 0.3)

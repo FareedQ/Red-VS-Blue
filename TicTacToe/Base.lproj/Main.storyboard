@@ -146,6 +146,10 @@
         <scene sceneID="s9e-fr-dgC">
             <objects>
                 <viewController id="2O2-xI-lTE" customClass="SettingsVC" customModule="TicTacToe" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="rAI-tn-BLa"/>
+                        <viewControllerLayoutGuide type="bottom" id="lko-Y0-9jr"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="6Et-O7-u79">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -158,6 +162,9 @@
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0H2-jg-cD7">
                                 <rect key="frame" x="276" y="128" width="51" height="31"/>
+                                <connections>
+                                    <action selector="soundSwitch:" destination="2O2-xI-lTE" eventType="valueChanged" id="UwJ-gh-ham"/>
+                                </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Computer:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sEM-aA-yaN">
                                 <rect key="frame" x="89" y="167" width="173" height="31"/>
@@ -170,6 +177,9 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="31" id="Zrl-5r-ZhO"/>
                                 </constraints>
+                                <connections>
+                                    <action selector="computerSwitch:" destination="2O2-xI-lTE" eventType="valueChanged" id="mml-sb-Ai8"/>
+                                </connections>
                             </switch>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="KsY-3Q-gHb">
                                 <rect key="frame" x="161" y="273" width="92" height="29"/>
@@ -179,6 +189,9 @@
                                     <segment title="25"/>
                                 </segments>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="selectTiles:" destination="2O2-xI-lTE" eventType="valueChanged" id="TaN-z6-jAf"/>
+                                </connections>
                             </segmentedControl>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yqf-cz-NO1">
                                 <rect key="frame" x="132" y="41" width="151" height="45"/>

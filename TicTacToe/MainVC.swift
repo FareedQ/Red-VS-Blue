@@ -104,9 +104,26 @@ class MainVC: UIViewController {
         }
         
     }
+    
     func animateClosingSetting() {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.settingMenuContraint.constant = 0
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    
+    func animateSettingsPeekStart() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.settingMenuContraint.constant = -self.view.frame.width + 40
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    
+    func animateSettingsPeekEnd() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.settingMenuContraint.constant = -self.view.frame.width
             self.view.layoutIfNeeded()
         })
     }
@@ -121,11 +138,40 @@ class MainVC: UIViewController {
         
         guard let thisCell = collectionView.dequeueReusableCellWithReuseIdentifier("selectionCell", forIndexPath: indexPath) as? SelectionCell else {return UICollectionViewCell() }
         
-        thisCell.id = indexPath.row
         thisCell.layer.borderWidth = 1
         thisCell.imageView.image = nil
         thisCell.layer.borderColor = UIColor.blackColor().CGColor
+        
+        thisCell.id = indexPath.row
         BoardDelegate.sharedInstance.setupTilesInMemory(thisCell)
+        var TILEPERROW = BoardDelegate.sharedInstance.tilesPerRow
+        
+        thisCell.neighbourTopLeft = indexPath.row - TILEPERROW - 1
+        thisCell.neighbourTopMiddle = indexPath.row - TILEPERROW
+        thisCell.neighbourTopRight = indexPath.row - TILEPERROW + 1
+        thisCell.neighbourMiddleLeft = indexPath.row - 1
+        thisCell.neighbourMiddleRight = indexPath.row + 1
+        thisCell.neighbourBottomLeft = indexPath.row + TILEPERROW - 1
+        thisCell.neighbourBottomMiddle = indexPath.row + TILEPERROW
+        thisCell.neighbourBottomRight = indexPath.row + TILEPERROW + 1
+        
+        func setupTilesInMemory(tile:SelectionCell){
+            guard let tileId = tile.id else {return}
+            
+            if(tileId%TILEPERROW == 0 || tileId%TILEPERROW == TILEPERROW-1){
+                if(tileId/TILEPERROW == 0 || tileId/TILEPERROW == TILEPERROW-1){
+                    thisCell.tile = Tile(type: .Corner, player: .None)
+                } else {
+                    thisCell.tile = Tile(type: .Edge, player: .None)
+                }
+            } else {
+                if(tileId/TILEPERROW == 0 || tileId/TILEPERROW == TILEPERROW-1){
+                    thisCell.tile = Tile(type: .Edge, player: .None)
+                } else {
+                    thisCell.tile = Tile(type: .Center, player: .None)
+                }
+            }
+        }
         
         return thisCell
     }
