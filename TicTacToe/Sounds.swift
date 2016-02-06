@@ -17,6 +17,8 @@ class Sounds: NSObject {
     var cheersSound: AVAudioPlayer?
     var booSound: AVAudioPlayer?
     
+    var soundState = true
+    
     func setupSounds(){
         if let robotSound = self.setupAudioPlayerWithFile("Robot", type:"wav") {
             self.robotSound = robotSound
@@ -44,10 +46,24 @@ class Sounds: NSObject {
     }
     
     func stopAllSounds(){
-        Sounds.sharedInstance.cheersSound?.stop()
-        Sounds.sharedInstance.cheersSound?.currentTime = 0
-        Sounds.sharedInstance.booSound?.stop()
-        Sounds.sharedInstance.booSound?.currentTime = 0
+        cheersSound?.stop()
+        cheersSound?.currentTime = 0
+        booSound?.stop()
+        booSound?.currentTime = 0
+    }
+    
+    func toggleSounds(){
+        if soundState {
+            robotSound?.volume = 0
+            cheersSound?.volume = 0
+            booSound?.volume = 0
+            soundState = false
+        } else {
+            robotSound?.volume = 1
+            cheersSound?.volume = 1
+            booSound?.volume = 1
+            soundState = true
+        }
     }
     
 }

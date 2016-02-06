@@ -18,7 +18,10 @@ class SettingsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         computerSwitchOutlet.on = BoardDelegate.sharedInstance.computerPlayerIsActive
+        soundSwitchOutlet.on = Sounds.sharedInstance.soundState
+        
         switch BoardDelegate.sharedInstance.tilesPerRow {
         case 3:
             tilesSegmentedOutlet.selectedSegmentIndex = 0
@@ -56,6 +59,7 @@ class SettingsVC: UIViewController {
     }
     
     @IBAction func soundSwitch(sender: UISwitch) {
+        Sounds.sharedInstance.toggleSounds()
         
     }
     

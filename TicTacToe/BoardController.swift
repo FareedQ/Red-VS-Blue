@@ -23,15 +23,15 @@ class BoardDelegate: NSObject {
     var computerPlayerIsActive = true
     var tilesPerRow = 4
     
-    var winningConditions = [
-        [0,1,2],
-        [3,4,5],
-        [6,7,8],
-        [0,4,8],
-        [2,4,6],
-        [0,3,6],
-        [1,4,7],
-        [2,5,8]]
+//    var winningConditions = [
+//        [0,1,2],
+//        [3,4,5],
+//        [6,7,8],
+//        [0,4,8],
+//        [2,4,6],
+//        [0,3,6],
+//        [1,4,7],
+//        [2,5,8]]
     
     
     //MARK: CalculatedParameters
@@ -99,13 +99,19 @@ class BoardDelegate: NSObject {
     func setupTilesInMemory(tile:SelectionCell){
         guard let tileId = tile.id else {return}
         
-        if(tileId%tilesPerRow == 0 || tileId%tilesPerRow == 2){
-            if(tileId/tilesPerRow < 1 || tileId/tilesPerRow > tilesPerRow-1){
+        if(tileId%tilesPerRow == 0 || tileId%tilesPerRow == tilesPerRow-1){
+            if(tileId/tilesPerRow == 0 || tileId/tilesPerRow == tilesPerRow-1){
                 memoryBoard.board[tileId] = Tile(type: .Corner, player: .None)
+            } else {
+                memoryBoard.board[tileId] = Tile(type: .Edge, player: .None)
             }
-            memoryBoard.board[tileId] = Tile(type: .Edge, player: .None)
+        } else {
+            if(tileId/tilesPerRow == 0 || tileId/tilesPerRow == tilesPerRow-1){
+                memoryBoard.board[tileId] = Tile(type: .Edge, player: .None)
+            } else {
+                memoryBoard.board[tileId] = Tile(type: .Center, player: .None)
+            }
         }
-        memoryBoard.board[tileId] = Tile(type: .Center, player: .None)
     }
     
     //MARK: PlayGame
@@ -181,43 +187,42 @@ class BoardDelegate: NSObject {
 
     //MARK:EndGame
     func isGameOver() -> WinResults {
-        if isWinner() {
-            switch whoseTurn {
-            case .X:
-                Sounds.sharedInstance.cheersSound?.play()
-                return .WinnerX
-            case .O:
-                if(computerPlayerIsActive){
-                    Sounds.sharedInstance.booSound?.play()
-                } else {
-                    Sounds.sharedInstance.cheersSound?.play()
-                }
-                return .WinnerO
-            case .None:
-                Sounds.sharedInstance.cheersSound?.play()
-                break
-            }
-        }
+//        if isWinner() {
+//            switch whoseTurn {
+//            case .X:
+//                Sounds.sharedInstance.cheersSound?.play()
+//                return .WinnerX
+//            case .O:
+//                if(computerPlayerIsActive){
+//                    Sounds.sharedInstance.booSound?.play()
+//                } else {
+//                    Sounds.sharedInstance.cheersSound?.play()
+//                }
+//                return .WinnerO
+//            default:
+//                break
+//            }
+//        }
         if isNoTurnsLeft() { return .EndOfTurns }
         return .Continuing
     }
     
-    func isWinner() -> Bool {
-        var playersCollectedTiles = [Int]()
-        for tileId in collectedTiles {
-            guard let tile = memoryBoard.board[tileId] else {return false}
-            if tile.player == whoseTurn {
-                playersCollectedTiles.append(tileId)
-            }
-        }
-        let playercollectedSet = Set(playersCollectedTiles)
-        
-        for winCondition in winningConditions {
-            let winConditionSet = Set(winCondition)
-            if playercollectedSet.isSupersetOf(winConditionSet) { return true }
-        }
-        return false
-    }
+//    func isWinner() -> Bool {
+//        var playersCollectedTiles = [Int]()
+//        for tileId in collectedTiles {
+//            guard let tile = memoryBoard.board[tileId] else {return false}
+//            if tile.player == whoseTurn {
+//                playersCollectedTiles.append(tileId)
+//            }
+//        }
+//        let playercollectedSet = Set(playersCollectedTiles)
+//        
+//        for winCondition in winningConditions {
+//            let winConditionSet = Set(winCondition)
+//            if playercollectedSet.isSupersetOf(winConditionSet) { return true }
+//        }
+//        return false
+//    }
     
     func isNoTurnsLeft() -> Bool {
         if(turnCount == (memoryBoard.board.count - 1)) {
@@ -231,7 +236,7 @@ class BoardDelegate: NSObject {
         
         var randomIndex = Int(arc4random_uniform(UInt32(rangeToSelectFrom.count)))
         while allCollectedTiles.contains(rangeToSelectFrom[randomIndex]) {
-            randomIndex = Int(arc4random_uniform(4))
+            randomIndex = Int(arc4random_uniform(UInt32(rangeToSelectFrom.count)))
         }
         return rangeToSelectFrom[randomIndex]
     }
