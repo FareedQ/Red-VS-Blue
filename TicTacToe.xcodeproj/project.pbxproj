@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		015D73C31C6079B6001F0117 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015D73C21C6079B6001F0117 /* Board.swift */; };
-		015D73C51C607C67001F0117 /* Globals Enums and Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015D73C41C607C67001F0117 /* Globals Enums and Structs.swift */; };
+		015D73C51C607C67001F0117 /* Enums & Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015D73C41C607C67001F0117 /* Enums & Structs.swift */; };
 		0163235F1C6159F9002E3EB5 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0163235E1C6159F8002E3EB5 /* SettingsVC.swift */; };
 		016672751C511E760099BA10 /* Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016672741C511E760099BA10 /* Sounds.swift */; };
 		016936131C4EDF9E003858AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016936121C4EDF9E003858AC /* AppDelegate.swift */; };
@@ -46,7 +46,7 @@
 
 /* Begin PBXFileReference section */
 		015D73C21C6079B6001F0117 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
-		015D73C41C607C67001F0117 /* Globals Enums and Structs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Globals Enums and Structs.swift"; sourceTree = "<group>"; };
+		015D73C41C607C67001F0117 /* Enums & Structs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Enums & Structs.swift"; sourceTree = "<group>"; };
 		0163235E1C6159F8002E3EB5 /* SettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		016672741C511E760099BA10 /* Sounds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sounds.swift; sourceTree = "<group>"; };
 		0169360F1C4EDF9E003858AC /* TicTacToe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicTacToe.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -149,7 +149,6 @@
 			isa = PBXGroup;
 			children = (
 				01AE5F2B1C64137C00D77716 /* Assets.xcassets */,
-				015D73C41C607C67001F0117 /* Globals Enums and Structs.swift */,
 				01AE5F251C6403A200D77716 /* Block Cartoon.ttf */,
 				01AE5F271C640A9100D77716 /* Robot.wav */,
 				016936491C4EEBAC003858AC /* Cheers.wav */,
@@ -184,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				016936211C4EDF9E003858AC /* Info.plist */,
+				015D73C41C607C67001F0117 /* Enums & Structs.swift */,
 				016672741C511E760099BA10 /* Sounds.swift */,
 				015D73C21C6079B6001F0117 /* Board.swift */,
 			);
@@ -328,7 +328,7 @@
 				016936461C4EE4BA003858AC /* SelectionCell.swift in Sources */,
 				016672751C511E760099BA10 /* Sounds.swift in Sources */,
 				016936151C4EDF9E003858AC /* MainVC.swift in Sources */,
-				015D73C51C607C67001F0117 /* Globals Enums and Structs.swift in Sources */,
+				015D73C51C607C67001F0117 /* Enums & Structs.swift in Sources */,
 				015D73C31C6079B6001F0117 /* Board.swift in Sources */,
 				01AE5F2E1C641E2300D77716 /* ArtificialIntelligence.swift in Sources */,
 				017672C91C626CF800BEE8E7 /* BoardController.swift in Sources */,

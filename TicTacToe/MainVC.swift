@@ -9,7 +9,7 @@
 import UIKit
 import AudioToolbox
 
-class MainVC: UIViewController {
+class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     @IBOutlet weak var settingsButtonOutlet: UIButton!
     @IBOutlet weak var visualBoard: UICollectionView!
@@ -25,7 +25,7 @@ class MainVC: UIViewController {
     //MARK: Override UIViewController Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        BoardDelegate.sharedInstance.setup(self)
+        BoardDelegate.sharedInstance.setupBoard(self)
         setupGuestureRecongizers()
     }
     
@@ -48,6 +48,12 @@ class MainVC: UIViewController {
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: "pullSettings:")
         gestureRecognizer.minimumPressDuration = 0
         self.view.addGestureRecognizer(gestureRecognizer)
+        
+        
+        guard let gestures = collectionView.gestureRecognizers else { return }
+        for gesture in gestures {
+            gestureRecognizer.requireGestureRecognizerToFail(gesture)
+        }
     }
     
     var touchedSettings = false
@@ -69,7 +75,7 @@ class MainVC: UIViewController {
             if visualBoard.frame.contains(touch) {
                 let locationInCollectionView = sender.locationInView(visualBoard)
                 guard let indexPath = visualBoard.indexPathForItemAtPoint(locationInCollectionView) else {return}
-                selectItemOnBoard(indexPath)
+                BoardDelegate.sharedInstance.selectItemOnBoard(indexPath)
             }
             break
         case .Changed:
@@ -128,9 +134,8 @@ class MainVC: UIViewController {
         })
     }
     
-    //MARK: CollectionView
+    //MARK: Override CollectionView
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         return BoardDelegate.sharedInstance.tilesCount
     }
     
@@ -142,57 +147,9 @@ class MainVC: UIViewController {
         thisCell.imageView.image = nil
         thisCell.layer.borderColor = UIColor.blackColor().CGColor
         
-        thisCell.id = indexPath.row
-        BoardDelegate.sharedInstance.setupTilesInMemory(thisCell)
-        var TILEPERROW = BoardDelegate.sharedInstance.tilesPerRow
-        
-        thisCell.neighbourTopLeft = indexPath.row - TILEPERROW - 1
-        thisCell.neighbourTopMiddle = indexPath.row - TILEPERROW
-        thisCell.neighbourTopRight = indexPath.row - TILEPERROW + 1
-        thisCell.neighbourMiddleLeft = indexPath.row - 1
-        thisCell.neighbourMiddleRight = indexPath.row + 1
-        thisCell.neighbourBottomLeft = indexPath.row + TILEPERROW - 1
-        thisCell.neighbourBottomMiddle = indexPath.row + TILEPERROW
-        thisCell.neighbourBottomRight = indexPath.row + TILEPERROW + 1
-        
-        func setupTilesInMemory(tile:SelectionCell){
-            guard let tileId = tile.id else {return}
-            
-            if(tileId%TILEPERROW == 0 || tileId%TILEPERROW == TILEPERROW-1){
-                if(tileId/TILEPERROW == 0 || tileId/TILEPERROW == TILEPERROW-1){
-                    thisCell.tile = Tile(type: .Corner, player: .None)
-                } else {
-                    thisCell.tile = Tile(type: .Edge, player: .None)
-                }
-            } else {
-                if(tileId/TILEPERROW == 0 || tileId/TILEPERROW == TILEPERROW-1){
-                    thisCell.tile = Tile(type: .Edge, player: .None)
-                } else {
-                    thisCell.tile = Tile(type: .Center, player: .None)
-                }
-            }
-        }
+        BoardDelegate.sharedInstance.setupTiles(indexPath.row)
         
         return thisCell
-    }
-    
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        selectItemOnBoard(indexPath)
-        
-    }
-    
-    //Needed to have this function called directly after guesture recongizers were added to the page
-    func selectItemOnBoard(indexPath:NSIndexPath){
-        if BoardDelegate.sharedInstance.lockSelectionForComputersTurn {return}
-        
-        if (BoardDelegate.sharedInstance.whoHasClaimed(indexPath.row) == .None) {
-            guard let thisCell = visualBoard.cellForItemAtIndexPath(indexPath) as? SelectionCell else {return}
-            
-            let results = BoardDelegate.sharedInstance.executeSelection(thisCell)
-            displayAlertBasedOnWinResults(results)
-        }
-        
-        BoardDelegate.sharedInstance.letComputerHaveATurn()
     }
     
     func collectionView(collectionView: UICollectionView,
@@ -206,34 +163,22 @@ class MainVC: UIViewController {
             return mySize
     }
     
-    //MARK:Alerts
-    func displayAlertBasedOnWinResults(results:WinResults) {
-        switch results {
-        case .WinnerX:
-            alertMessage(title: "Game Over", message: "Blue Player Wins")
+    //MARK: Animations
+    func displayPlayer(tileId:Int){
+        let indexPath = NSIndexPath(forItem: tileId, inSection: 0)
+        guard let thisCell = visualBoard.cellForItemAtIndexPath(indexPath) as? SelectionCell else {return}
+        
+        switch BoardDelegate.sharedInstance.whoseTurn {
+        case .X:
+            thisCell.imageView.image = UIImage(named: "blue")
             break
-        case .WinnerO:
-            alertMessage(title: "Game Over", message: "Red Player Wins")
-            break
-        case .EndOfTurns:
-            alertMessage(title:"Game Over", message: "No one wins")
-            break
-        case .Error:
-            alertMessage(title: "Error", message: "You broke the system!!")
+        case .O:
+            thisCell.imageView.image = UIImage(named: "red")
             break
         default:
             break
         }
-    }
-    
-    //Needed to show alerts
-    func alertMessage(title title:String, message:String){
-        let alert = UIAlertController(title: "Game Over", message: message, preferredStyle: .Alert)
-        let okay = UIAlertAction(title: "Okay", style: .Default) { (UIAlertAction) -> Void in
-            Sounds.sharedInstance.stopAllSounds()
-            BoardDelegate.sharedInstance.resetBoard()
-        }
-        alert.addAction(okay)
-        self.presentViewController(alert, animated: true, completion: nil)
+        
+        thisCell.animateTextCommingIn()
     }
 }

@@ -21,7 +21,7 @@ class BoardDelegate: NSObject {
     var turnCount = 0
     var lockSelectionForComputersTurn = false
     var computerPlayerIsActive = true
-    var tilesPerRow = 4
+    var tilesPerRow = 3
     
 //    var winningConditions = [
 //        [0,1,2],
@@ -83,7 +83,7 @@ class BoardDelegate: NSObject {
     }
     
     //MARK: BoardMaintence
-    func setup(controllingView:MainVC){
+    func setupBoard(controllingView:MainVC){
         self.controllingView = controllingView
         self.visualBoard = controllingView.visualBoard
         resetBoard()
@@ -96,29 +96,57 @@ class BoardDelegate: NSObject {
         visualBoard?.reloadData()
     }
     
-    func setupTilesInMemory(tile:SelectionCell){
-        guard let tileId = tile.id else {return}
+    func setupTiles(tileId:Int){
         
+        let neighbouringTiles = [
+        "TopLeft":tileId - tilesPerRow - 1,
+        "TopMiddle":tileId - tilesPerRow,
+        "TopRight":tileId - tilesPerRow + 1,
+        "MiddleLeft":tileId - 1,
+        "MiddleRight":tileId + 1,
+        "BottomLeft":tileId + tilesPerRow - 1,
+        "BottomMiddle":tileId + tilesPerRow,
+        "BottomRight":tileId + tilesPerRow + 1]
+        
+        var tileType:TileType?
         if(tileId%tilesPerRow == 0 || tileId%tilesPerRow == tilesPerRow-1){
             if(tileId/tilesPerRow == 0 || tileId/tilesPerRow == tilesPerRow-1){
-                memoryBoard.board[tileId] = Tile(type: .Corner, player: .None)
+                tileType = .Corner
             } else {
-                memoryBoard.board[tileId] = Tile(type: .Edge, player: .None)
+                tileType = .Edge
             }
         } else {
             if(tileId/tilesPerRow == 0 || tileId/tilesPerRow == tilesPerRow-1){
-                memoryBoard.board[tileId] = Tile(type: .Edge, player: .None)
+                tileType = .Edge
             } else {
-                memoryBoard.board[tileId] = Tile(type: .Center, player: .None)
+                tileType = .Center
             }
         }
+        guard let assignedTile = tileType else {
+            NSLog("A tile was not assigned a type", "")
+            return
+        }
+        
+        memoryBoard.board[tileId] = Tile(tileType: assignedTile, player: .None,neighbouringTiles:neighbouringTiles)
     }
     
     //MARK: PlayGame
-    func executeSelection(thisCell:SelectionCell) -> WinResults {
+    func selectItemOnBoard(indexPath:NSIndexPath){
+        if BoardDelegate.sharedInstance.lockSelectionForComputersTurn {return}
         
-        collectTile(thisCell)
-        thisCell.animateTextCommingIn()
+        if (BoardDelegate.sharedInstance.whoHasClaimed(indexPath.row) == .None) {
+            let results = BoardDelegate.sharedInstance.executeSelection(indexPath.row)
+            displayAlertBasedOnWinResults(results)
+        }
+        
+        BoardDelegate.sharedInstance.letComputerHaveATurn()
+    }
+    
+    func executeSelection(tileId:Int) -> WinResults {
+        guard let myControllingView = controllingView else { return .Error }
+        
+        collectTile(tileId)
+        myControllingView.displayPlayer(tileId)
         let stateOfGame = isGameOver()
         if stateOfGame == .Continuing {
             incrementTurn()
@@ -126,17 +154,14 @@ class BoardDelegate: NSObject {
         return stateOfGame
     }
     
-    func collectTile(thisCell:SelectionCell){
-        guard let id = thisCell.id else {return}
+    func collectTile(tileId:Int){
         
         switch whoseTurn {
         case .X:
-            thisCell.imageView.image = UIImage(named: "blue")
-            memoryBoard.board[id]?.player = whoseTurn
+            memoryBoard.board[tileId]?.player = whoseTurn
             break
         case .O:
-            thisCell.imageView.image = UIImage(named: "red")
-            memoryBoard.board[id]?.player = whoseTurn
+            memoryBoard.board[tileId]?.player = whoseTurn
             break
         default:
             break
@@ -167,21 +192,16 @@ class BoardDelegate: NSObject {
     
     func computerSelection(){
         
-        guard let myVisualBoard = self.visualBoard else {return}
-        guard let myControllingView = self.controllingView else {return}
-        
-        
         BoardDelegate.sharedInstance.lockSelectionForComputersTurn = true
         let seconds = 1.0
-        let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
+        let delay = seconds * Double(NSEC_PER_SEC)
         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         
         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
             BoardDelegate.sharedInstance.lockSelectionForComputersTurn = false
             let computersChoice = self.HAL9000.aggressivelyTakeTileSelection()
-            guard let actualtile = myVisualBoard.cellForItemAtIndexPath(NSIndexPath(forRow: computersChoice, inSection: 0)) as? SelectionCell else { return }
-            let results = BoardDelegate.sharedInstance.executeSelection(actualtile)
-            myControllingView.displayAlertBasedOnWinResults(results)
+            let results = BoardDelegate.sharedInstance.executeSelection(computersChoice)
+            self.displayAlertBasedOnWinResults(results)
         })
     }
 
@@ -231,7 +251,40 @@ class BoardDelegate: NSObject {
         return false
     }
     
-    //MARK: RandomTileSelection
+    
+    
+    func displayAlertBasedOnWinResults(results:WinResults) {
+        switch results {
+        case .WinnerX:
+            alertMessage(title: "Game Over", message: "Blue Player Wins")
+            break
+        case .WinnerO:
+            alertMessage(title: "Game Over", message: "Red Player Wins")
+            break
+        case .EndOfTurns:
+            alertMessage(title:"Game Over", message: "No one wins")
+            break
+        case .Error:
+            alertMessage(title: "Error", message: "You broke the system!!")
+            break
+        default:
+            break
+        }
+    }
+    
+    func alertMessage(title title:String, message:String){
+        guard let myViewController = controllingView else {return}
+        
+        let alert = UIAlertController(title: "Game Over", message: message, preferredStyle: .Alert)
+        let okay = UIAlertAction(title: "Okay", style: .Default) { (UIAlertAction) -> Void in
+            Sounds.sharedInstance.stopAllSounds()
+            BoardDelegate.sharedInstance.resetBoard()
+        }
+        alert.addAction(okay)
+        myViewController.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    //MARK: Utility Function
     func aRandomTile(allCollectedTiles:[Int], var rangeToSelectFrom:[Int]) -> Int {
         
         var randomIndex = Int(arc4random_uniform(UInt32(rangeToSelectFrom.count)))

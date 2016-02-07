@@ -19,7 +19,7 @@ struct Board {
         get {
             var returnTiles = [Int]()
             for mytile in board {
-                if mytile.1.type == .Center {
+                if mytile.1.tileType == .Center {
                     returnTiles.append(mytile.0)
                 }
             }
@@ -31,7 +31,7 @@ struct Board {
         get {
             var returnTiles = [Int]()
             for mytile in board {
-                if mytile.1.type == .Corner {
+                if mytile.1.tileType == .Corner {
                     returnTiles.append(mytile.0)
                 }
             }

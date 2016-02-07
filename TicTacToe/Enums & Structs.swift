@@ -12,15 +12,10 @@ enum Player {
     case None
 }
 
-enum tileType {
+enum TileType {
     case Center
     case Corner
     case Edge
-}
-
-struct Tile {
-    let type:tileType
-    var player:Player
 }
 
 enum WinResults {
@@ -29,4 +24,10 @@ enum WinResults {
     case EndOfTurns
     case Error
     case Continuing
+}
+
+struct Tile {
+    let tileType:TileType
+    var player:Player
+    var neighbouringTiles:[String:Int]
 }
