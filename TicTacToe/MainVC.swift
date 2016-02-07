@@ -45,65 +45,42 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     //MARK: GuestureRecongizer
     func setupGuestureRecongizers(){
         
-        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: "pullSettings:")
-        gestureRecognizer.minimumPressDuration = 0
-        self.view.addGestureRecognizer(gestureRecognizer)
-        
+        let LongPressGuesture = UILongPressGestureRecognizer(target: self, action: "pullSettings:")
+        LongPressGuesture.minimumPressDuration = 0
         
         guard let gestures = collectionView.gestureRecognizers else { return }
         for gesture in gestures {
-            gestureRecognizer.requireGestureRecognizerToFail(gesture)
+            LongPressGuesture.requireGestureRecognizerToFail(gesture)
         }
+        
+        self.view.addGestureRecognizer(LongPressGuesture)
+        
+        
     }
     
     var touchedSettings = false
     var openSettings = false
     var beginningTouch = CGPoint()
-    func pullSettings(sender: UIPanGestureRecognizer){
+    func pullSettings(sender: UILongPressGestureRecognizer){
         let touch = sender.locationInView(view)
         
         switch sender.state {
         case .Began:
-            if settingsButtonOutlet.frame.contains(touch) {
-                touchedSettings = true
-                beginningTouch = touch
-                UIView.animateWithDuration(0.2, animations: { () -> Void in
-                    self.settingMenuContraint.constant = -40
-                    self.view.layoutIfNeeded()
-                })
-            }
-            if visualBoard.frame.contains(touch) {
-                let locationInCollectionView = sender.locationInView(visualBoard)
-                guard let indexPath = visualBoard.indexPathForItemAtPoint(locationInCollectionView) else {return}
-                BoardDelegate.sharedInstance.selectItemOnBoard(indexPath)
-            }
+            peekSetting(touch)
+            selectBoard(sender, touchInView: touch)
             break
         case .Changed:
-            if touchedSettings {
-                settingMenuContraint.constant = (touch.x - view.frame.width)
-                if touch.x < beginningTouch.x {
-                    openSettings = true
-                } else {
-                    openSettings = false
-                }
-            }
-            break
+                touchMovedLeft(touch)
         case .Ended:
             if touchedSettings {
-                touchedSettings = false
                 if openSettings {
-                    UIView.animateWithDuration(0.3, animations: { () -> Void in
-                        self.settingMenuContraint.constant = -self.view.frame.width
-                        self.view.layoutIfNeeded()
-                    })
+                    animateOpenSettings()
                 } else {
-                    UIView.animateWithDuration(0.2, animations: { () -> Void in
-                        self.settingMenuContraint.constant = 0
-                        self.view.layoutIfNeeded()
-                    })
+                    animateCloseSetting()
                 }
-                openSettings = false
             }
+            openSettings = false
+            touchedSettings = false
             break
         default:
             break
@@ -111,7 +88,32 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         
     }
     
-    func animateClosingSetting() {
+    func touchMovedLeft(touch:CGPoint){
+        settingMenuContraint.constant = (touch.x - view.frame.width)
+        if touch.x < beginningTouch.x {
+            openSettings = true
+        } else {
+            openSettings = false
+        }
+    }
+    
+    func peekSetting(touch:CGPoint){
+        if settingsButtonOutlet.frame.contains(touch) {
+            touchedSettings = true
+            beginningTouch = touch
+            animatePeekSettings()
+        }
+    }
+    
+    func selectBoard(sender:UILongPressGestureRecognizer, touchInView:CGPoint){
+        if visualBoard.frame.contains(touchInView) {
+            let locationInCollectionView = sender.locationInView(visualBoard)
+            guard let indexPath = visualBoard.indexPathForItemAtPoint(locationInCollectionView) else {return}
+            BoardDelegate.sharedInstance.selectItemOnBoard(indexPath)
+        }
+    }
+    
+    func animateCloseSetting() {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.settingMenuContraint.constant = 0
             self.view.layoutIfNeeded()
@@ -119,15 +121,15 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     }
     
     
-    func animateSettingsPeekStart() {
+    func animatePeekSettings() {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.settingMenuContraint.constant = -self.view.frame.width + 40
+            self.settingMenuContraint.constant = -40
             self.view.layoutIfNeeded()
         })
     }
     
     
-    func animateSettingsPeekEnd() {
+    func animateOpenSettings() {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.settingMenuContraint.constant = -self.view.frame.width
             self.view.layoutIfNeeded()

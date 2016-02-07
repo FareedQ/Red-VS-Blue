@@ -102,15 +102,15 @@ class SettingsVC: UIViewController {
             break
         case .Changed:
             if touch.x > touchStart.x + 40 {
-                self.myMainVC!.animateSettingsPeekStart()
+                self.myMainVC!.animateOpenSettings()
                 openSettings = true
             } else if touch.x < touchStart.x + 40 {
-                    self.myMainVC!.animateSettingsPeekEnd()
+                    self.myMainVC!.animateOpenSettings()
                     openSettings = false
             }
         case .Ended:
             if openSettings {
-                self.myMainVC!.animateClosingSetting()
+                self.myMainVC!.animateCloseSetting()
                 openSettings = false
             }
             break

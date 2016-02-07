@@ -29,7 +29,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Red vs Blue" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XjX-Vi-YAh">
                                 <rect key="frame" x="20" y="19" width="374" height="33"/>
                                 <fontDescription key="fontDescription" name="BLOCK_CARTOON" family="BLOCK CARTOON" pointSize="30"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="XOM-gk-r12">
@@ -133,6 +133,7 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
+                        <outlet property="collectionView" destination="XOM-gk-r12" id="dKR-lv-ekt"/>
                         <outlet property="settingMenuContraint" destination="zcp-1X-ALP" id="YGo-aa-j0t"/>
                         <outlet property="settingsButtonOutlet" destination="8vz-hm-8kX" id="RwS-TX-adx"/>
                         <outlet property="visualBoard" destination="XOM-gk-r12" id="ygU-hz-XbZ"/>
