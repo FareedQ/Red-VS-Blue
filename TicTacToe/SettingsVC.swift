@@ -12,8 +12,6 @@ class SettingsVC: UIViewController {
 
     weak var myMainVC:MainVC?
     
-    @IBOutlet weak var soundSwitchOutlet: UISwitch!
-    @IBOutlet weak var computerSwitchOutlet: UISwitch!
     @IBOutlet weak var backLabelOutlet: UILabel!
     
     var resetBoardUponReturn = false
@@ -21,29 +19,11 @@ class SettingsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        computerSwitchOutlet.on = BoardDelegate.sharedInstance.computerPlayerIsActive
-        soundSwitchOutlet.on = Sounds.sharedInstance.soundState
-        
         setupGuestureRecongizers()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-    }
-    
-    @IBAction func soundSwitch(sender: UISwitch) {
-        Sounds.sharedInstance.toggleSounds()
-        
-    }
-    
-    @IBAction func computerSwitch(sender: UISwitch) {
-        if sender.on {
-            BoardDelegate.sharedInstance.computerPlayerIsActive = true
-            resetBoardUponReturn = true
-        } else {
-            BoardDelegate.sharedInstance.computerPlayerIsActive = false
-            resetBoardUponReturn = true
-        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -70,24 +50,35 @@ class SettingsVC: UIViewController {
     }
     
     func pressGesture(sender: UIPanGestureRecognizer){
-        guard let actualMainVC = myMainVC else {return}
         let touch = sender.locationInView(view)
         
         switch sender.state {
         case .Began:
-            if backLabelOutlet.frame.contains(touch) {
-                actualMainVC.animatePeekingMain()
-            }
+            PeekMain(touch)
             break
         case .Ended:
-            if backLabelOutlet.frame.contains(touch) {
-                actualMainVC.animateClosingSetting()
-            } else {
-                actualMainVC.animateOpeningSettings()
-            }
+            touchBackLabel(touch)
             break
         default:
             break
+        }
+    }
+    
+    func PeekMain(touch:CGPoint) {
+        guard let actualMainVC = myMainVC else {return}
+        
+        if backLabelOutlet.frame.contains(touch) {
+            actualMainVC.animatePeekingMain()
+        }
+    }
+    
+    func touchBackLabel(touch:CGPoint) {
+        guard let actualMainVC = myMainVC else {return}
+        
+        if backLabelOutlet.frame.contains(touch) {
+            actualMainVC.animateClosingSetting()
+        } else {
+            actualMainVC.animateOpeningSettings()
         }
     }
     

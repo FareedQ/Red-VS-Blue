@@ -155,6 +155,18 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         })
     }
     
+    //MARK: Shake Gestures
+    override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
+    
+    override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
+        if motion == .MotionShake {
+            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+            BoardDelegate.sharedInstance.resetBoard()
+        }
+    }
+    
     //MARK: Override CollectionView
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return BoardDelegate.sharedInstance.tilesCount
