@@ -13,15 +13,19 @@ private let sharedSounds = Sounds()
 class Sounds: NSObject {
     static let sharedInstance = Sounds()
     
-    var robotSound: AVAudioPlayer?
+    var xSound: AVAudioPlayer?
+    var oSound: AVAudioPlayer?
     var cheersSound: AVAudioPlayer?
     var booSound: AVAudioPlayer?
     
     var soundState = true
     
     func setupSounds(){
-        if let robotSound = self.setupAudioPlayerWithFile("Robot", type:"wav") {
-            self.robotSound = robotSound
+        if let xSound = self.setupAudioPlayerWithFile("X", type:"wav") {
+            self.xSound = xSound
+        }
+        if let oSound = self.setupAudioPlayerWithFile("O", type:"wav") {
+            self.oSound = oSound
         }
         if let cheersSound = self.setupAudioPlayerWithFile("Cheers", type:"wav") {
             self.cheersSound = cheersSound
@@ -54,12 +58,14 @@ class Sounds: NSObject {
     
     func toggleSounds(){
         if soundState {
-            robotSound?.volume = 0
+            xSound?.volume = 0
+            oSound?.volume = 0
             cheersSound?.volume = 0
             booSound?.volume = 0
             soundState = false
         } else {
-            robotSound?.volume = 1
+            xSound?.volume = 1
+            oSound?.volume = 1
             cheersSound?.volume = 1
             booSound?.volume = 1
             soundState = true

@@ -20,6 +20,8 @@
 		016936461C4EE4BA003858AC /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016936451C4EE4BA003858AC /* SelectionCell.swift */; };
 		016936481C4EEB9D003858AC /* Boo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 016936471C4EEB9D003858AC /* Boo.mp3 */; };
 		0169364A1C4EEBAC003858AC /* Cheers.wav in Resources */ = {isa = PBXBuildFile; fileRef = 016936491C4EEBAC003858AC /* Cheers.wav */; };
+		0172116D1C670F630018ED37 /* X.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0172116C1C670F630018ED37 /* X.wav */; };
+		0172116F1C670F6A0018ED37 /* O.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0172116E1C670F6A0018ED37 /* O.wav */; };
 		017672C91C626CF800BEE8E7 /* BoardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017672C81C626CF800BEE8E7 /* BoardController.swift */; };
 		01AE5F261C6404BA00D77716 /* Block Cartoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 01AE5F251C6403A200D77716 /* Block Cartoon.ttf */; };
 		01AE5F281C640A9100D77716 /* Robot.wav in Resources */ = {isa = PBXBuildFile; fileRef = 01AE5F271C640A9100D77716 /* Robot.wav */; };
@@ -64,6 +66,8 @@
 		016936451C4EE4BA003858AC /* SelectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionCell.swift; sourceTree = "<group>"; };
 		016936471C4EEB9D003858AC /* Boo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Boo.mp3; sourceTree = "<group>"; };
 		016936491C4EEBAC003858AC /* Cheers.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Cheers.wav; sourceTree = "<group>"; };
+		0172116C1C670F630018ED37 /* X.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = X.wav; sourceTree = "<group>"; };
+		0172116E1C670F6A0018ED37 /* O.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = O.wav; sourceTree = "<group>"; };
 		017672C81C626CF800BEE8E7 /* BoardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardController.swift; sourceTree = "<group>"; };
 		01AE5F251C6403A200D77716 /* Block Cartoon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Block Cartoon.ttf"; sourceTree = "<group>"; };
 		01AE5F271C640A9100D77716 /* Robot.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Robot.wav; sourceTree = "<group>"; };
@@ -153,6 +157,8 @@
 				01AE5F271C640A9100D77716 /* Robot.wav */,
 				016936491C4EEBAC003858AC /* Cheers.wav */,
 				016936471C4EEB9D003858AC /* Boo.mp3 */,
+				0172116E1C670F6A0018ED37 /* O.wav */,
+				0172116C1C670F630018ED37 /* X.wav */,
 			);
 			name = resources;
 			sourceTree = "<group>";
@@ -295,7 +301,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				01AE5F261C6404BA00D77716 /* Block Cartoon.ttf in Resources */,
+				0172116D1C670F630018ED37 /* X.wav in Resources */,
 				01AE5F281C640A9100D77716 /* Robot.wav in Resources */,
+				0172116F1C670F6A0018ED37 /* O.wav in Resources */,
 				016936201C4EDF9E003858AC /* LaunchScreen.storyboard in Resources */,
 				016936481C4EEB9D003858AC /* Boo.mp3 in Resources */,
 				01AE5F2C1C64137C00D77716 /* Assets.xcassets in Resources */,

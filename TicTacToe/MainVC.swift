@@ -11,18 +11,13 @@ import AudioToolbox
 
 class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    @IBOutlet weak var settingsButtonOutlet: UIButton!
-    @IBOutlet weak var visualBoard: UICollectionView!
     weak var mySettingVC:SettingsVC?
     
-    //MARK IBOutlets
-    
-    @IBOutlet weak var collectionView: UICollectionView!
-    @IBAction func prepareForUnwind(segue:UIStoryboardSegue) {
-    }
+    @IBOutlet weak var visualBoard: UICollectionView!
+    @IBOutlet weak var settingsButtonOutlet: UIButton!
     @IBOutlet weak var settingMenuContraint: NSLayoutConstraint!
     
-    //MARK: Override UIViewController Functions
+    //MARK: Override UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         BoardDelegate.sharedInstance.setupBoard(self)
@@ -43,25 +38,31 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     }
     
     //MARK: GuestureRecongizer
-    func setupGuestureRecongizers(){
-        
-        let LongPressGuesture = UILongPressGestureRecognizer(target: self, action: "pullSettings:")
-        LongPressGuesture.minimumPressDuration = 0
-        
-        guard let gestures = collectionView.gestureRecognizers else { return }
-        for gesture in gestures {
-            LongPressGuesture.requireGestureRecognizerToFail(gesture)
-        }
-        
-        self.view.addGestureRecognizer(LongPressGuesture)
-        
-        
-    }
     
     var touchedSettings = false
-    var openSettings = false
-    var beginningTouch = CGPoint()
-    func pullSettings(sender: UILongPressGestureRecognizer){
+    var confirmedOpenSettings = false
+    var firstTouchPonit = CGPoint()
+    
+    func setupGuestureRecongizers(){
+        
+        
+        let LongPressGuesture = UILongPressGestureRecognizer(target: self, action: "pressGuestures:")
+        LongPressGuesture.minimumPressDuration = 0
+        
+        guard let gestures = visualBoard.gestureRecognizers else { return }
+        for gesture in gestures {
+            view.removeGestureRecognizer(gesture)
+        }
+        
+        let edgeGuesture = UIScreenEdgePanGestureRecognizer(target: self, action: "edgeGuesture:")
+        edgeGuesture.edges = .Right
+        LongPressGuesture.requireGestureRecognizerToFail(edgeGuesture)
+        
+        view.addGestureRecognizer(LongPressGuesture)
+        view.addGestureRecognizer(edgeGuesture)
+    }
+    
+    func pressGuestures(sender: UILongPressGestureRecognizer){
         let touch = sender.locationInView(view)
         
         switch sender.state {
@@ -69,39 +70,29 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             peekSetting(touch)
             selectBoard(sender, touchInView: touch)
             break
+            
         case .Changed:
-                touchMovedLeft(touch)
-        case .Ended:
-            if touchedSettings {
-                if openSettings {
-                    animateOpenSettings()
-                } else {
-                    animateCloseSetting()
-                }
-            }
-            openSettings = false
-            touchedSettings = false
+            touchMovedLeft(touch)
             break
+            
+        case .Ended:
+            openSetting()
+            break
+            
         default:
             break
         }
-        
     }
     
-    func touchMovedLeft(touch:CGPoint){
-        settingMenuContraint.constant = (touch.x - view.frame.width)
-        if touch.x < beginningTouch.x {
-            openSettings = true
-        } else {
-            openSettings = false
-        }
+    func edgeGuesture(sender: UIScreenEdgePanGestureRecognizer){
+        animateOpeningSettings()
     }
     
     func peekSetting(touch:CGPoint){
         if settingsButtonOutlet.frame.contains(touch) {
             touchedSettings = true
-            beginningTouch = touch
-            animatePeekSettings()
+            firstTouchPonit = touch
+            animatePeekingSettings()
         }
     }
     
@@ -113,23 +104,51 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         }
     }
     
-    func animateCloseSetting() {
+    func touchMovedLeft(touch:CGPoint){
+        if touchedSettings {
+            settingMenuContraint.constant = (touch.x - view.frame.width)
+            if touch.x < firstTouchPonit.x {
+                confirmedOpenSettings = true
+            } else {
+                confirmedOpenSettings = false
+            }
+        }
+    }
+    
+    func openSetting(){
+        if touchedSettings {
+            if confirmedOpenSettings {
+                animateOpeningSettings()
+            } else {
+                animateClosingSetting()
+            }
+        }
+        confirmedOpenSettings = false
+        touchedSettings = false
+    }
+    
+    func animateClosingSetting() {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.settingMenuContraint.constant = 0
             self.view.layoutIfNeeded()
         })
     }
     
-    
-    func animatePeekSettings() {
+    func animatePeekingSettings() {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.settingMenuContraint.constant = -40
             self.view.layoutIfNeeded()
         })
     }
     
+    func animatePeekingMain() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.settingMenuContraint.constant = -self.view.frame.width + 40
+            self.view.layoutIfNeeded()
+        })
+    }
     
-    func animateOpenSettings() {
+    func animateOpeningSettings() {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.settingMenuContraint.constant = -self.view.frame.width
             self.view.layoutIfNeeded()
@@ -146,8 +165,8 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         guard let thisCell = collectionView.dequeueReusableCellWithReuseIdentifier("selectionCell", forIndexPath: indexPath) as? SelectionCell else {return UICollectionViewCell() }
         
         thisCell.layer.borderWidth = 1
-        thisCell.imageView.image = nil
-        thisCell.layer.borderColor = UIColor.blackColor().CGColor
+        thisCell.label.text = ""
+        thisCell.layer.borderColor = UIColor.whiteColor().CGColor
         
         BoardDelegate.sharedInstance.setupTiles(indexPath.row)
         
@@ -172,10 +191,14 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         
         switch BoardDelegate.sharedInstance.whoseTurn {
         case .X:
-            thisCell.imageView.image = UIImage(named: "blue")
+            thisCell.label.text = "X"
+            Sounds.sharedInstance.xSound?.currentTime = 0
+            Sounds.sharedInstance.xSound?.play()
             break
         case .O:
-            thisCell.imageView.image = UIImage(named: "red")
+            thisCell.label.text = "O"
+            Sounds.sharedInstance.oSound?.currentTime = 0
+            Sounds.sharedInstance.oSound?.play()
             break
         default:
             break

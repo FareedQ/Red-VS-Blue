@@ -14,9 +14,9 @@ class SettingsVC: UIViewController {
     
     @IBOutlet weak var soundSwitchOutlet: UISwitch!
     @IBOutlet weak var computerSwitchOutlet: UISwitch!
-    @IBOutlet weak var tilesSegmentedOutlet: UISegmentedControl!
+    @IBOutlet weak var backLabelOutlet: UILabel!
     
-    var resetBoard = false
+    var resetBoardUponReturn = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,40 +24,9 @@ class SettingsVC: UIViewController {
         computerSwitchOutlet.on = BoardDelegate.sharedInstance.computerPlayerIsActive
         soundSwitchOutlet.on = Sounds.sharedInstance.soundState
         
-        switch BoardDelegate.sharedInstance.tilesPerRow {
-        case 3:
-            tilesSegmentedOutlet.selectedSegmentIndex = 0
-            break
-        case 4:
-            tilesSegmentedOutlet.selectedSegmentIndex = 1
-            break
-        case 5:
-            tilesSegmentedOutlet.selectedSegmentIndex = 2
-            break
-        default:
-            break
-        }
-        
         setupGuestureRecongizers()
     }
-
-    @IBAction func selectTiles(sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
-        case 0:
-            BoardDelegate.sharedInstance.tilesPerRow = 3
-            break
-        case 1:
-            BoardDelegate.sharedInstance.tilesPerRow = 4
-            break
-        case 2:
-            BoardDelegate.sharedInstance.tilesPerRow = 5
-            break
-        default:
-            break
-        }
-        resetBoard = true
-        
-    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -70,54 +39,61 @@ class SettingsVC: UIViewController {
     @IBAction func computerSwitch(sender: UISwitch) {
         if sender.on {
             BoardDelegate.sharedInstance.computerPlayerIsActive = true
-            resetBoard = true
+            resetBoardUponReturn = true
         } else {
             BoardDelegate.sharedInstance.computerPlayerIsActive = false
-            resetBoard = true
+            resetBoardUponReturn = true
         }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "exitSegue" && resetBoard {
+        if segue.identifier == "exitSegue" && resetBoardUponReturn {
             BoardDelegate.sharedInstance.resetBoard()
         }
     }
     
     //MARK: GuestureRecongizer
+    var firstTouchPonit = CGPoint()
+    
     func setupGuestureRecongizers(){
         
-        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: "pullSettings:")
-        gestureRecognizer.minimumPressDuration = 0
-        self.view.addGestureRecognizer(gestureRecognizer)
+        let pressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "pressGesture:")
+        pressGestureRecognizer.minimumPressDuration = 0
+        
+        let edgeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: "edgeGesture:")
+        edgeGesture.edges = .Left
+        pressGestureRecognizer.requireGestureRecognizerToFail(edgeGesture)
+        
+        view.addGestureRecognizer(pressGestureRecognizer)
+        view.addGestureRecognizer(edgeGesture)
+        
     }
     
-    var touchStart = CGPoint()
-    var openSettings = false
-    func pullSettings(sender: UIPanGestureRecognizer){
+    func pressGesture(sender: UIPanGestureRecognizer){
+        guard let actualMainVC = myMainVC else {return}
         let touch = sender.locationInView(view)
         
         switch sender.state {
         case .Began:
-                touchStart = touch
-            break
-        case .Changed:
-            if touch.x > touchStart.x + 40 {
-                self.myMainVC!.animateOpenSettings()
-                openSettings = true
-            } else if touch.x < touchStart.x + 40 {
-                    self.myMainVC!.animateOpenSettings()
-                    openSettings = false
+            if backLabelOutlet.frame.contains(touch) {
+                actualMainVC.animatePeekingMain()
             }
+            break
         case .Ended:
-            if openSettings {
-                self.myMainVC!.animateCloseSetting()
-                openSettings = false
+            if backLabelOutlet.frame.contains(touch) {
+                actualMainVC.animateClosingSetting()
+            } else {
+                actualMainVC.animateOpeningSettings()
             }
             break
         default:
             break
         }
-        
+    }
+    
+    func edgeGesture(sender: UIScreenEdgePanGestureRecognizer){
+        guard let actualMainVC = myMainVC else {return}
+        actualMainVC.animateClosingSetting()
     }
     
 }
