@@ -16,6 +16,7 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     @IBOutlet weak var visualBoard: UICollectionView!
     @IBOutlet weak var settingsButtonOutlet: UIButton!
     @IBOutlet weak var settingMenuContraint: NSLayoutConstraint!
+    @IBOutlet weak var resetLabel: UILabel!
     
     //MARK: Override UIViewController
     override func viewDidLoad() {
@@ -69,6 +70,7 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         case .Began:
             peekSetting(touch)
             selectBoard(sender, touchInView: touch)
+            touchDownResetLabel(touch)
             break
             
         case .Changed:
@@ -77,6 +79,7 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             
         case .Ended:
             openSetting()
+            touchUpResetLabel(touch)
             break
             
         default:
@@ -104,6 +107,12 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         }
     }
     
+    func touchDownResetLabel(touch:CGPoint){
+        if resetLabel.frame.contains(touch){
+            resetLabel.alpha = 0.5
+        }
+    }
+    
     func touchMovedLeft(touch:CGPoint){
         if touchedSettings {
             settingMenuContraint.constant = (touch.x - view.frame.width)
@@ -125,6 +134,13 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         }
         confirmedOpenSettings = false
         touchedSettings = false
+    }
+    
+    func touchUpResetLabel(touch:CGPoint){
+        resetLabel.alpha = 1
+        if resetLabel.frame.contains(touch){
+            performReset()
+        }
     }
     
     func animateClosingSetting() {
@@ -162,9 +178,13 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     
     override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
         if motion == .MotionShake {
-            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-            BoardDelegate.sharedInstance.resetBoard()
+            performReset()
         }
+    }
+    
+    func performReset(){
+        AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+        BoardDelegate.sharedInstance.resetBoard()
     }
     
     //MARK: Override CollectionView
