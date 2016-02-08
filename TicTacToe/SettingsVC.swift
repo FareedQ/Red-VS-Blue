@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 class SettingsVC: UIViewController {
 
@@ -71,6 +72,7 @@ class SettingsVC: UIViewController {
         case .Ended:
             togglePlayer(touch)
             toggleSound(touch)
+            touchResetScore(touch)
             touchBackLabel(touch)
             break
         default:
@@ -115,6 +117,23 @@ class SettingsVC: UIViewController {
         }
     }
     
+    func touchResetScore(touch:CGPoint) {
+        if resetScoreLabel.frame.contains(touch) {
+            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+            
+        let alert = UIAlertController(title: "Caution", message: "This operation will reset the high score board and is not reversable", preferredStyle: .Alert)
+        let save = UIAlertAction(title: "Okay", style: .Default) {
+            (alertAction:UIAlertAction) -> Void in
+            //TODO: Need to erase NSUserDefaults of high score
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .Default) { (UIAlertAction) -> Void in
+        }
+        alert.addAction(save)
+        alert.addAction(cancel)
+        presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
     func touchBackLabel(touch:CGPoint) {
         guard let actualMainVC = myMainVC else {return}
         
@@ -131,6 +150,9 @@ class SettingsVC: UIViewController {
     }
     
     //MARK: Utilites
+    
+    //For some reason the contraints animate after text is changed on the view.
+    //This hack is in place to make the unknown animation not seem as obvious.
     func resetContraints(){
         leadingContraint.constant = 8
         topContraint.constant = 3
