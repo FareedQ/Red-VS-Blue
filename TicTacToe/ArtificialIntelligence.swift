@@ -9,7 +9,28 @@
 import UIKit
 
 class ArtificialIntelligence: NSObject {
-    //This extention is to create an artificial intelligent player to compete with
+    
+    func chooseTile() -> Int {
+        switch BoardDelegate.sharedInstance.difficultyFlag {
+        case .Hard:
+            return aggressivelyTakeTileSelection()
+        case .Medium:
+            if arc4random_uniform(4) < 2 {
+                return aggressivelyTakeTileSelection()
+            } else {
+                return greedyTileSelection()
+            }
+        case .Easy:
+            if arc4random_uniform(4) > 2 {
+                return aggressivelyTakeTileSelection()
+            } else {
+                return BoardDelegate.sharedInstance.getARandomTile()
+            }
+        default:
+            break
+        }
+        return -1
+    }
     
     //Checks if a win can occur and react accordingly
     func aggressivelyTakeTileSelection() -> Int {

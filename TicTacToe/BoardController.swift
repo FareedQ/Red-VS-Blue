@@ -21,6 +21,7 @@ class BoardDelegate: NSObject {
     var turnCount = 0
     var lockSelectionForComputersTurn = false
     var computerPlayerIsActive = true
+    var difficultyFlag:difficultyType = .Hard
     var tilesPerRow = 3
     
     var winningConditions = [
@@ -199,7 +200,7 @@ class BoardDelegate: NSObject {
         
         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
             BoardDelegate.sharedInstance.lockSelectionForComputersTurn = false
-            let computersChoice = self.HAL9000.aggressivelyTakeTileSelection()
+            let computersChoice = self.HAL9000.chooseTile()
             let results = BoardDelegate.sharedInstance.executeSelection(computersChoice)
             self.displayAlertBasedOnWinResults(results)
         })
@@ -246,6 +247,7 @@ class BoardDelegate: NSObject {
     
     func isNoTurnsLeft() -> Bool {
         if(turnCount == (memoryBoard.board.count - 1)) {
+            Sounds.sharedInstance.booSound?.play()
             return true
         }
         return false
@@ -256,10 +258,10 @@ class BoardDelegate: NSObject {
     func displayAlertBasedOnWinResults(results:WinResults) {
         switch results {
         case .WinnerX:
-            alertMessage(title: "Game Over", message: "Blue Player Wins")
+            alertMessage(title: "Game Over", message: "X Wins")
             break
         case .WinnerO:
-            alertMessage(title: "Game Over", message: "Red Player Wins")
+            alertMessage(title: "Game Over", message: "O Wins")
             break
         case .EndOfTurns:
             alertMessage(title:"Game Over", message: "No one wins")

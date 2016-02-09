@@ -31,3 +31,10 @@ struct Tile {
     var player:Player
     var neighbouringTiles:[String:Int]
 }
+
+enum difficultyType {
+    case None;
+    case Hard;
+    case Medium;
+    case Easy;
+}

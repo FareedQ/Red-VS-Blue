@@ -72,6 +72,7 @@ class SettingsVC: UIViewController {
         case .Ended:
             togglePlayer(touch)
             toggleSound(touch)
+            touchDifficulty(touch)
             touchResetScore(touch)
             touchBackLabel(touch)
             break
@@ -93,17 +94,35 @@ class SettingsVC: UIViewController {
             if BoardDelegate.sharedInstance.computerPlayerIsActive {
                 playerResultLabelOutlet.text = "2"
                 BoardDelegate.sharedInstance.computerPlayerIsActive = false
-                hardLabel.textColor = UIColor.grayColor()
-                mediumLabel.textColor = UIColor.grayColor()
-                easyLabel.textColor = UIColor.grayColor()
+                toggleDifficultySelection()
             } else {
                 playerResultLabelOutlet.text = "1"
                 BoardDelegate.sharedInstance.computerPlayerIsActive = true
-                hardLabel.textColor = UIColor.greenColor()
-                mediumLabel.textColor = UIColor.whiteColor()
-                easyLabel.textColor = UIColor.whiteColor()
+                toggleDifficultySelection()
             }
         }
+    }
+    
+    func toggleDifficultySelection(){
+        if BoardDelegate.sharedInstance.computerPlayerIsActive == false {
+            hardLabel.textColor = UIColor.grayColor()
+            mediumLabel.textColor = UIColor.grayColor()
+            easyLabel.textColor = UIColor.grayColor()
+            return
+        } else {
+            hardLabel.textColor = UIColor.whiteColor()
+            mediumLabel.textColor = UIColor.whiteColor()
+            easyLabel.textColor = UIColor.whiteColor()
+        }
+        
+        if BoardDelegate.sharedInstance.difficultyFlag == .Hard {
+            hardLabel.textColor = UIColor.greenColor()
+        } else if BoardDelegate.sharedInstance.difficultyFlag == .Medium {
+            mediumLabel.textColor = UIColor.greenColor()
+        } else if BoardDelegate.sharedInstance.difficultyFlag == .Easy {
+            easyLabel.textColor = UIColor.greenColor()
+        }
+        
     }
     
     func toggleSound(touch:CGPoint) {
@@ -115,6 +134,18 @@ class SettingsVC: UIViewController {
             }
             Sounds.sharedInstance.toggleSounds()
         }
+    }
+    
+    func touchDifficulty(touch:CGPoint) {
+        if BoardDelegate.sharedInstance.computerPlayerIsActive == false { return }
+        if hardLabel.frame.contains(touch) {
+            BoardDelegate.sharedInstance.difficultyFlag = .Hard
+        } else if mediumLabel.frame.contains(touch) {
+            BoardDelegate.sharedInstance.difficultyFlag = .Medium
+        } else if easyLabel.frame.contains(touch) {
+            BoardDelegate.sharedInstance.difficultyFlag = .Easy
+        }
+        toggleDifficultySelection()
     }
     
     func touchResetScore(touch:CGPoint) {
