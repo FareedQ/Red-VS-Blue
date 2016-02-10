@@ -155,7 +155,7 @@ class SettingsVC: UIViewController {
         let alert = UIAlertController(title: "Caution", message: "This operation will reset the high score board and is not reversable", preferredStyle: .Alert)
         let save = UIAlertAction(title: "Okay", style: .Default) {
             (alertAction:UIAlertAction) -> Void in
-            //TODO: Need to erase NSUserDefaults of high score
+            HighScore.sharedInstance.resetAllScores()
         }
         let cancel = UIAlertAction(title: "Cancel", style: .Default) { (UIAlertAction) -> Void in
         }
