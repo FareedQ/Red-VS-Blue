@@ -40,7 +40,7 @@ class SettingsVC: UIViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "exitSegue" && resetBoardUponReturn {
-            BoardDelegate.sharedInstance.resetBoard()
+            Game.sharedInstance.resetBoard()
         }
     }
     
@@ -67,7 +67,7 @@ class SettingsVC: UIViewController {
         switch sender.state {
         case .Began:
             resetContraints()
-            //PeekMain(touch)
+            PeekMain(touch)
             break
         case .Ended:
             togglePlayer(touch)
@@ -91,20 +91,20 @@ class SettingsVC: UIViewController {
     
     func togglePlayer(touch:CGPoint) {
         if playerLabelOutlet.frame.contains(touch) || playerResultLabelOutlet.frame.contains(touch) {
-            if BoardDelegate.sharedInstance.computerPlayerIsActive {
+            if Game.sharedInstance.computerPlayerIsActive {
                 playerResultLabelOutlet.text = "2"
-                BoardDelegate.sharedInstance.computerPlayerIsActive = false
+                Game.sharedInstance.computerPlayerIsActive = false
                 toggleDifficultySelection()
             } else {
                 playerResultLabelOutlet.text = "1"
-                BoardDelegate.sharedInstance.computerPlayerIsActive = true
+                Game.sharedInstance.computerPlayerIsActive = true
                 toggleDifficultySelection()
             }
         }
     }
     
     func toggleDifficultySelection(){
-        if BoardDelegate.sharedInstance.computerPlayerIsActive == false {
+        if Game.sharedInstance.computerPlayerIsActive == false {
             hardLabel.textColor = UIColor.grayColor()
             mediumLabel.textColor = UIColor.grayColor()
             easyLabel.textColor = UIColor.grayColor()
@@ -115,11 +115,11 @@ class SettingsVC: UIViewController {
             easyLabel.textColor = UIColor.whiteColor()
         }
         
-        if BoardDelegate.sharedInstance.difficultyFlag == .Hard {
+        if Game.sharedInstance.difficultyFlag == .Hard {
             hardLabel.textColor = UIColor.greenColor()
-        } else if BoardDelegate.sharedInstance.difficultyFlag == .Medium {
+        } else if Game.sharedInstance.difficultyFlag == .Medium {
             mediumLabel.textColor = UIColor.greenColor()
-        } else if BoardDelegate.sharedInstance.difficultyFlag == .Easy {
+        } else if Game.sharedInstance.difficultyFlag == .Easy {
             easyLabel.textColor = UIColor.greenColor()
         }
         
@@ -137,13 +137,13 @@ class SettingsVC: UIViewController {
     }
     
     func touchDifficulty(touch:CGPoint) {
-        if BoardDelegate.sharedInstance.computerPlayerIsActive == false { return }
+        if Game.sharedInstance.computerPlayerIsActive == false { return }
         if hardLabel.frame.contains(touch) {
-            BoardDelegate.sharedInstance.difficultyFlag = .Hard
+            Game.sharedInstance.difficultyFlag = .Hard
         } else if mediumLabel.frame.contains(touch) {
-            BoardDelegate.sharedInstance.difficultyFlag = .Medium
+            Game.sharedInstance.difficultyFlag = .Medium
         } else if easyLabel.frame.contains(touch) {
-            BoardDelegate.sharedInstance.difficultyFlag = .Easy
+            Game.sharedInstance.difficultyFlag = .Easy
         }
         toggleDifficultySelection()
     }

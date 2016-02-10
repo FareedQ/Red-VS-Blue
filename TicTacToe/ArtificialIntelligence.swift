@@ -11,7 +11,7 @@ import UIKit
 class ArtificialIntelligence: NSObject {
     
     func chooseTile() -> Int {
-        switch BoardDelegate.sharedInstance.difficultyFlag {
+        switch Game.sharedInstance.difficultyFlag {
         case .Hard:
             return aggressivelyTakeTileSelection()
         case .Medium:
@@ -24,7 +24,7 @@ class ArtificialIntelligence: NSObject {
             if arc4random_uniform(4) > 2 {
                 return aggressivelyTakeTileSelection()
             } else {
-                return BoardDelegate.sharedInstance.getARandomTile()
+                return Game.sharedInstance.getARandomTile()
             }
         default:
             break
@@ -34,9 +34,9 @@ class ArtificialIntelligence: NSObject {
     
     //Checks if a win can occur and react accordingly
     func aggressivelyTakeTileSelection() -> Int {
-        for winCondition in BoardDelegate.sharedInstance.winningConditions {
+        for winCondition in Game.sharedInstance.winningConditions {
             
-            let tileCombination = BoardDelegate.sharedInstance.whoHasClaimedThisSet(winCondition)
+            let tileCombination = Game.sharedInstance.whoHasClaimedThisSet(winCondition)
             for index0 in 0...(tileCombination.count-1) {
                 let index1 = (index0+1)%(tileCombination.count)
                 let index2 = (index0+2)%(tileCombination.count)
@@ -52,14 +52,14 @@ class ArtificialIntelligence: NSObject {
     //Chooses the center tile and the corner tiles if avaliable
     func greedyTileSelection() -> Int {
         
-        var tileId = BoardDelegate.sharedInstance.getARandomCenterTile()
+        var tileId = Game.sharedInstance.getARandomCenterTile()
         
         if (tileId == -1) {
-            tileId = BoardDelegate.sharedInstance.getARandomCornerTile()
+            tileId = Game.sharedInstance.getARandomCornerTile()
         }
         
         if (tileId == -1) {
-            tileId = BoardDelegate.sharedInstance.getARandomTile()
+            tileId = Game.sharedInstance.getARandomTile()
         }
         
         return tileId

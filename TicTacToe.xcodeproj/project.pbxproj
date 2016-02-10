@@ -22,9 +22,8 @@
 		0169364A1C4EEBAC003858AC /* Cheers.wav in Resources */ = {isa = PBXBuildFile; fileRef = 016936491C4EEBAC003858AC /* Cheers.wav */; };
 		0172116D1C670F630018ED37 /* X.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0172116C1C670F630018ED37 /* X.wav */; };
 		0172116F1C670F6A0018ED37 /* O.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0172116E1C670F6A0018ED37 /* O.wav */; };
-		017672C91C626CF800BEE8E7 /* BoardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017672C81C626CF800BEE8E7 /* BoardController.swift */; };
-		01AE5F261C6404BA00D77716 /* Block Cartoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 01AE5F251C6403A200D77716 /* Block Cartoon.ttf */; };
-		01AE5F281C640A9100D77716 /* Robot.wav in Resources */ = {isa = PBXBuildFile; fileRef = 01AE5F271C640A9100D77716 /* Robot.wav */; };
+		017672C91C626CF800BEE8E7 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017672C81C626CF800BEE8E7 /* Game.swift */; };
+		01803E4C1C6AF0420059A9D1 /* HighScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01803E4B1C6AF0420059A9D1 /* HighScore.swift */; };
 		01AE5F2C1C64137C00D77716 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01AE5F2B1C64137C00D77716 /* Assets.xcassets */; };
 		01AE5F2E1C641E2300D77716 /* ArtificialIntelligence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01AE5F2D1C641E2300D77716 /* ArtificialIntelligence.swift */; };
 /* End PBXBuildFile section */
@@ -68,9 +67,8 @@
 		016936491C4EEBAC003858AC /* Cheers.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Cheers.wav; sourceTree = "<group>"; };
 		0172116C1C670F630018ED37 /* X.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = X.wav; sourceTree = "<group>"; };
 		0172116E1C670F6A0018ED37 /* O.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = O.wav; sourceTree = "<group>"; };
-		017672C81C626CF800BEE8E7 /* BoardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardController.swift; sourceTree = "<group>"; };
-		01AE5F251C6403A200D77716 /* Block Cartoon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Block Cartoon.ttf"; sourceTree = "<group>"; };
-		01AE5F271C640A9100D77716 /* Robot.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Robot.wav; sourceTree = "<group>"; };
+		017672C81C626CF800BEE8E7 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		01803E4B1C6AF0420059A9D1 /* HighScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighScore.swift; sourceTree = "<group>"; };
 		01AE5F2B1C64137C00D77716 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		01AE5F2D1C641E2300D77716 /* ArtificialIntelligence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtificialIntelligence.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -153,12 +151,11 @@
 			isa = PBXGroup;
 			children = (
 				01AE5F2B1C64137C00D77716 /* Assets.xcassets */,
-				01AE5F251C6403A200D77716 /* Block Cartoon.ttf */,
-				01AE5F271C640A9100D77716 /* Robot.wav */,
 				016936491C4EEBAC003858AC /* Cheers.wav */,
 				016936471C4EEB9D003858AC /* Boo.mp3 */,
 				0172116E1C670F6A0018ED37 /* O.wav */,
 				0172116C1C670F630018ED37 /* X.wav */,
+				016936211C4EDF9E003858AC /* Info.plist */,
 			);
 			name = resources;
 			sourceTree = "<group>";
@@ -170,8 +167,9 @@
 				016936141C4EDF9E003858AC /* MainVC.swift */,
 				0163235E1C6159F8002E3EB5 /* SettingsVC.swift */,
 				016936451C4EE4BA003858AC /* SelectionCell.swift */,
-				017672C81C626CF800BEE8E7 /* BoardController.swift */,
+				017672C81C626CF800BEE8E7 /* Game.swift */,
 				01AE5F2D1C641E2300D77716 /* ArtificialIntelligence.swift */,
+				016672741C511E760099BA10 /* Sounds.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -188,10 +186,9 @@
 		016936501C4EF158003858AC /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				016936211C4EDF9E003858AC /* Info.plist */,
 				015D73C41C607C67001F0117 /* Enums & Structs.swift */,
-				016672741C511E760099BA10 /* Sounds.swift */,
 				015D73C21C6079B6001F0117 /* Board.swift */,
+				01803E4B1C6AF0420059A9D1 /* HighScore.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -300,9 +297,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01AE5F261C6404BA00D77716 /* Block Cartoon.ttf in Resources */,
 				0172116D1C670F630018ED37 /* X.wav in Resources */,
-				01AE5F281C640A9100D77716 /* Robot.wav in Resources */,
 				0172116F1C670F6A0018ED37 /* O.wav in Resources */,
 				016936201C4EDF9E003858AC /* LaunchScreen.storyboard in Resources */,
 				016936481C4EEB9D003858AC /* Boo.mp3 in Resources */,
@@ -337,9 +332,10 @@
 				016672751C511E760099BA10 /* Sounds.swift in Sources */,
 				016936151C4EDF9E003858AC /* MainVC.swift in Sources */,
 				015D73C51C607C67001F0117 /* Enums & Structs.swift in Sources */,
+				01803E4C1C6AF0420059A9D1 /* HighScore.swift in Sources */,
 				015D73C31C6079B6001F0117 /* Board.swift in Sources */,
 				01AE5F2E1C641E2300D77716 /* ArtificialIntelligence.swift in Sources */,
-				017672C91C626CF800BEE8E7 /* BoardController.swift in Sources */,
+				017672C91C626CF800BEE8E7 /* Game.swift in Sources */,
 				016936131C4EDF9E003858AC /* AppDelegate.swift in Sources */,
 				0163235F1C6159F9002E3EB5 /* SettingsVC.swift in Sources */,
 			);

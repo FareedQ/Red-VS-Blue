@@ -38,3 +38,14 @@ enum difficultyType {
     case Medium;
     case Easy;
 }
+
+enum ScoreCategories {
+    case HardPlayer;
+    case MediumPlayer;
+    case EasyPlayer;
+    case HardComputer;
+    case MediumComputer;
+    case EasyComputer;
+    case PlayerX;
+    case PlayerO;
+}

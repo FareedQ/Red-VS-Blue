@@ -11,6 +11,10 @@ import AudioToolbox
 
 class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
+    @IBOutlet weak var computerWinsLabel: UILabel!
+    
+    @IBOutlet weak var playerWinsLabel: UILabel!
+    
     weak var mySettingVC:SettingsVC?
     
     @IBOutlet weak var visualBoard: UICollectionView!
@@ -18,11 +22,14 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     @IBOutlet weak var settingMenuContraint: NSLayoutConstraint!
     @IBOutlet weak var resetLabel: UILabel!
     
+    
+    
     //MARK: Override UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        BoardDelegate.sharedInstance.setupBoard(self)
+        Game.sharedInstance.setupBoard(self)
         setupGuestureRecongizers()
+        updateScoreLabels()
     }
     
     override func didReceiveMemoryWarning() {
@@ -103,7 +110,7 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         if visualBoard.frame.contains(touchInView) {
             let locationInCollectionView = sender.locationInView(visualBoard)
             guard let indexPath = visualBoard.indexPathForItemAtPoint(locationInCollectionView) else {return}
-            BoardDelegate.sharedInstance.selectItemOnBoard(indexPath)
+            Game.sharedInstance.selectItemOnBoard(indexPath)
         }
     }
     
@@ -148,6 +155,7 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             self.settingMenuContraint.constant = 0
             self.view.layoutIfNeeded()
         })
+        updateScoreLabels()
     }
     
     func animatePeekingSettings() {
@@ -184,12 +192,12 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     
     func performReset(){
         AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-        BoardDelegate.sharedInstance.resetBoard()
+        Game.sharedInstance.resetBoard()
     }
     
     //MARK: Override CollectionView
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return BoardDelegate.sharedInstance.tilesCount
+        return Game.sharedInstance.tilesCount
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -200,7 +208,7 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         thisCell.label.text = ""
         thisCell.layer.borderColor = UIColor.whiteColor().CGColor
         
-        BoardDelegate.sharedInstance.setupTiles(indexPath.row)
+        Game.sharedInstance.setupTiles(indexPath.row)
         
         return thisCell
     }
@@ -210,8 +218,8 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
             
             let mySize = CGSize(
-                width: collectionView.bounds.size.width/CGFloat(BoardDelegate.sharedInstance.tilesPerRow),
-                height: collectionView.bounds.size.width/CGFloat(BoardDelegate.sharedInstance.tilesPerRow))
+                width: collectionView.bounds.size.width/CGFloat(Game.sharedInstance.tilesPerRow),
+                height: collectionView.bounds.size.width/CGFloat(Game.sharedInstance.tilesPerRow))
             
             return mySize
     }
@@ -221,7 +229,7 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         let indexPath = NSIndexPath(forItem: tileId, inSection: 0)
         guard let thisCell = visualBoard.cellForItemAtIndexPath(indexPath) as? SelectionCell else {return}
         
-        switch BoardDelegate.sharedInstance.whoseTurn {
+        switch Game.sharedInstance.whoseTurn {
         case .X:
             thisCell.label.text = "X"
             Sounds.sharedInstance.xSound?.currentTime = 0
@@ -237,5 +245,46 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         }
         
         thisCell.animateTextCommingIn()
+    }
+    
+    func updateScoreLabels(){
+        var returnPlayerWinsString = "Player : "
+        var returnComputerWinsString = "Computer : "
+            if !Game.sharedInstance.computerPlayerIsActive {
+                returnPlayerWinsString = "Player X : " + String(HighScore.sharedInstance.getData(.PlayerX))
+            } else {
+                switch Game.sharedInstance.difficultyFlag {
+                case .Hard:
+                    returnPlayerWinsString += String(HighScore.sharedInstance.getData(.HardPlayer))
+                    break
+                case .Medium:
+                    returnPlayerWinsString += String(HighScore.sharedInstance.getData(.MediumPlayer))
+                    break
+                case .Easy:
+                    returnPlayerWinsString += String(HighScore.sharedInstance.getData(.EasyPlayer))
+                    break
+                default:
+                    break
+                }
+            }
+            if !Game.sharedInstance.computerPlayerIsActive {
+                returnComputerWinsString = "Player O : " + String(HighScore.sharedInstance.getData(.PlayerO))
+            } else {
+                switch Game.sharedInstance.difficultyFlag {
+                case .Hard:
+                    returnComputerWinsString += String(HighScore.sharedInstance.getData(.HardComputer))
+                    break
+                case .Medium:
+                    returnComputerWinsString += String(HighScore.sharedInstance.getData(.MediumComputer))
+                    break
+                case .Easy:
+                    returnComputerWinsString += String(HighScore.sharedInstance.getData(.EasyComputer))
+                    break
+                default:
+                    break
+                }
+            }
+        playerWinsLabel.text = returnPlayerWinsString
+        computerWinsLabel.text = returnComputerWinsString
     }
 }

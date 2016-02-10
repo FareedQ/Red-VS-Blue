@@ -8,8 +8,8 @@
 
 import UIKit
 
-class BoardDelegate: NSObject {
-    static let sharedInstance = BoardDelegate()
+class Game: NSObject {
+    static let sharedInstance = Game()
     
     //MARK: Parameters
     private var memoryBoard = Board(board: [:])
@@ -133,14 +133,14 @@ class BoardDelegate: NSObject {
     
     //MARK: PlayGame
     func selectItemOnBoard(indexPath:NSIndexPath){
-        if BoardDelegate.sharedInstance.lockSelectionForComputersTurn {return}
+        if lockSelectionForComputersTurn {return}
         
-        if (BoardDelegate.sharedInstance.whoHasClaimed(indexPath.row) == .None) {
-            let results = BoardDelegate.sharedInstance.executeSelection(indexPath.row)
+        if (whoHasClaimed(indexPath.row) == .None) {
+            let results = executeSelection(indexPath.row)
             displayAlertBasedOnWinResults(results)
         }
         
-        BoardDelegate.sharedInstance.letComputerHaveATurn()
+        letComputerHaveATurn()
     }
     
     func executeSelection(tileId:Int) -> WinResults {
@@ -185,23 +185,23 @@ class BoardDelegate: NSObject {
     }
     
     func letComputerHaveATurn(){
-        if BoardDelegate.sharedInstance.computerPlayerIsActive && BoardDelegate.sharedInstance.whoseTurn == .O {
-            BoardDelegate.sharedInstance.computerSelection()
+        if computerPlayerIsActive && whoseTurn == .O {
+            computerSelection()
         }
     }
     
     
     func computerSelection(){
         
-        BoardDelegate.sharedInstance.lockSelectionForComputersTurn = true
+        lockSelectionForComputersTurn = true
         let seconds = 1.0
         let delay = seconds * Double(NSEC_PER_SEC)
         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         
         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
-            BoardDelegate.sharedInstance.lockSelectionForComputersTurn = false
+            self.lockSelectionForComputersTurn = false
             let computersChoice = self.HAL9000.chooseTile()
-            let results = BoardDelegate.sharedInstance.executeSelection(computersChoice)
+            let results = self.executeSelection(computersChoice)
             self.displayAlertBasedOnWinResults(results)
         })
     }
@@ -209,6 +209,9 @@ class BoardDelegate: NSObject {
     //MARK:EndGame
     func isGameOver() -> WinResults {
         if isWinner() {
+            incrementHighScore()
+            guard let mainVC = controllingView else {return .Error}
+            mainVC.updateScoreLabels()
             switch whoseTurn {
             case .X:
                 Sounds.sharedInstance.cheersSound?.play()
@@ -226,6 +229,51 @@ class BoardDelegate: NSObject {
         }
         if isNoTurnsLeft() { return .EndOfTurns }
         return .Continuing
+    }
+    
+    func incrementHighScore(){
+        switch whoseTurn {
+        case .X:
+            if !computerPlayerIsActive {
+                HighScore.sharedInstance.incrementScore(.PlayerX)
+            } else {
+                switch difficultyFlag {
+                case .Hard:
+                    HighScore.sharedInstance.incrementScore(.HardPlayer)
+                    break
+                case .Medium:
+                    HighScore.sharedInstance.incrementScore(.MediumPlayer)
+                    break
+                case .Easy:
+                    HighScore.sharedInstance.incrementScore(.EasyPlayer)
+                    break
+                default:
+                    break
+                }
+            }
+            break
+        case .O:
+            if !computerPlayerIsActive {
+                HighScore.sharedInstance.incrementScore(.PlayerO)
+            } else {
+                switch difficultyFlag {
+                case .Hard:
+                    HighScore.sharedInstance.incrementScore(.HardComputer)
+                    break
+                case .Medium:
+                    HighScore.sharedInstance.incrementScore(.MediumComputer)
+                    break
+                case .Easy:
+                    HighScore.sharedInstance.incrementScore(.EasyComputer)
+                    break
+                default:
+                    break
+                }
+            }
+            break
+        default:
+            break
+        }
     }
     
     func isWinner() -> Bool {
@@ -280,7 +328,7 @@ class BoardDelegate: NSObject {
         let alert = UIAlertController(title: "Game Over", message: message, preferredStyle: .Alert)
         let okay = UIAlertAction(title: "Okay", style: .Default) { (UIAlertAction) -> Void in
             Sounds.sharedInstance.stopAllSounds()
-            BoardDelegate.sharedInstance.resetBoard()
+            self.resetBoard()
         }
         alert.addAction(okay)
         myViewController.presentViewController(alert, animated: true, completion: nil)
@@ -297,21 +345,21 @@ class BoardDelegate: NSObject {
     }
     
     func getARandomCenterTile() -> Int {
-        if BoardDelegate.sharedInstance.isACenterTileAvaliable() {
+        if isACenterTileAvaliable() {
             return aRandomTile(collectedTiles, rangeToSelectFrom:memoryBoard.centerTiles)
         }
         return -1
     }
     
     func getARandomCornerTile() -> Int {
-        if BoardDelegate.sharedInstance.isACornerTileAvaliable() {
-            return aRandomTile(BoardDelegate.sharedInstance.collectedTiles, rangeToSelectFrom:BoardDelegate.sharedInstance.memoryBoard.cornerTiles)
+        if isACornerTileAvaliable() {
+            return aRandomTile(collectedTiles, rangeToSelectFrom:memoryBoard.cornerTiles)
         }
         return -1
     }
     
     func getARandomTile() -> Int {
-        return aRandomTile(BoardDelegate.sharedInstance.collectedTiles, rangeToSelectFrom:BoardDelegate.sharedInstance.memoryBoard.allTiles)
+        return aRandomTile(collectedTiles, rangeToSelectFrom:memoryBoard.allTiles)
     }
 }
 
