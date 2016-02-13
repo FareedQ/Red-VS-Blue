@@ -110,23 +110,32 @@
                                     <constraint firstAttribute="width" secondItem="oMF-56-An9" secondAttribute="height" id="SXY-fP-AE2"/>
                                 </constraints>
                             </imageView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iDe-sb-IAn">
-                                <rect key="frame" x="320" y="0.0" width="320" height="480"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iDe-sb-IAn" userLabel="Settings Container">
+                                <rect key="frame" x="320" y="20" width="320" height="460"/>
                                 <connections>
                                     <segue destination="2O2-xI-lTE" kind="embed" identifier="segueSettings" id="QJA-uH-1Gx"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yBQ-tX-3kU" userLabel="Highscore Container">
+                                <rect key="frame" x="320" y="20" width="320" height="460"/>
+                                <connections>
+                                    <segue destination="EZk-cc-5IL" kind="embed" id="rIB-gX-w78"/>
                                 </connections>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="XOM-gk-r12" firstAttribute="centerX" secondItem="v6w-gI-c4U" secondAttribute="centerX" id="1yA-Ii-sSD"/>
+                            <constraint firstItem="yBQ-tX-3kU" firstAttribute="centerX" secondItem="v6w-gI-c4U" secondAttribute="centerX" multiplier="3" id="36i-T8-koI"/>
+                            <constraint firstItem="Yj9-Pj-Yqh" firstAttribute="top" secondItem="yBQ-tX-3kU" secondAttribute="bottom" id="3Ta-uI-20w"/>
                             <constraint firstItem="iDe-sb-IAn" firstAttribute="width" secondItem="v6w-gI-c4U" secondAttribute="width" id="60q-RH-cIx"/>
                             <constraint firstItem="E5A-p6-ZD2" firstAttribute="centerX" secondItem="v6w-gI-c4U" secondAttribute="centerX" id="8p7-tm-ovB"/>
                             <constraint firstAttribute="trailingMargin" secondItem="8vz-hm-8kX" secondAttribute="trailing" id="9Gu-TA-jWm"/>
                             <constraint firstItem="oMF-56-An9" firstAttribute="leading" secondItem="v6w-gI-c4U" secondAttribute="leadingMargin" id="C6E-ms-T1N"/>
                             <constraint firstItem="Yj9-Pj-Yqh" firstAttribute="top" secondItem="4i3-ya-Qyv" secondAttribute="bottom" constant="20" id="Dcm-4U-jxK"/>
                             <constraint firstItem="XeU-Ab-Wbv" firstAttribute="leading" secondItem="v6w-gI-c4U" secondAttribute="leadingMargin" constant="40" id="FFn-hC-RZf"/>
-                            <constraint firstItem="iDe-sb-IAn" firstAttribute="top" secondItem="EXO-86-cDM" secondAttribute="bottom" constant="-20" id="J7a-MD-C0c"/>
+                            <constraint firstItem="yBQ-tX-3kU" firstAttribute="top" secondItem="EXO-86-cDM" secondAttribute="bottom" id="J19-zf-4eQ"/>
+                            <constraint firstItem="iDe-sb-IAn" firstAttribute="top" secondItem="EXO-86-cDM" secondAttribute="bottom" id="J7a-MD-C0c"/>
                             <constraint firstItem="VGl-BH-IZX" firstAttribute="top" secondItem="E5A-p6-ZD2" secondAttribute="bottom" id="JYs-tK-0xi"/>
                             <constraint firstAttribute="trailingMargin" secondItem="XjX-Vi-YAh" secondAttribute="trailing" id="LQ0-ov-Igw"/>
                             <constraint firstItem="4i3-ya-Qyv" firstAttribute="centerX" secondItem="VGl-BH-IZX" secondAttribute="centerX" id="O9R-xR-WLe"/>
@@ -143,6 +152,7 @@
                             <constraint firstItem="XOM-gk-r12" firstAttribute="leading" secondItem="v6w-gI-c4U" secondAttribute="leadingMargin" constant="20" id="hgT-4e-srU"/>
                             <constraint firstAttribute="trailingMargin" secondItem="XOM-gk-r12" secondAttribute="trailing" constant="20" id="i9Z-Gb-MXs"/>
                             <constraint firstItem="Yj9-Pj-Yqh" firstAttribute="top" secondItem="iDe-sb-IAn" secondAttribute="bottom" id="sNb-B1-8So"/>
+                            <constraint firstItem="yBQ-tX-3kU" firstAttribute="width" secondItem="v6w-gI-c4U" secondAttribute="width" id="tSW-Yw-ddW"/>
                             <constraint firstItem="XeU-Ab-Wbv" firstAttribute="top" secondItem="XOM-gk-r12" secondAttribute="bottom" constant="8" id="tl2-7r-00G"/>
                             <constraint firstItem="Yj9-Pj-Yqh" firstAttribute="top" secondItem="8vz-hm-8kX" secondAttribute="bottom" constant="30" id="zZM-rc-NVy"/>
                             <constraint firstItem="iDe-sb-IAn" firstAttribute="centerX" secondItem="v6w-gI-c4U" secondAttribute="centerX" multiplier="3" id="zcp-1X-ALP"/>
@@ -161,7 +171,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IBD-DW-Afy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="189.5" y="416.5"/>
+            <point key="canvasLocation" x="189" y="416"/>
         </scene>
         <!--SettingsVC-->
         <scene sceneID="s9e-fr-dgC">
@@ -318,6 +328,20 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="40a-0k-QvY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="870" y="417"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="IzS-Ek-McT">
+            <objects>
+                <viewController id="EZk-cc-5IL" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="frX-OR-vwV">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZIa-HF-7Pr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-386" y="407"/>
         </scene>
     </scenes>
     <resources>
