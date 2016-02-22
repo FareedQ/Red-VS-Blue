@@ -85,7 +85,7 @@ class SettingsVC: UIViewController {
         guard let actualMainVC = myMainVC else {return}
         
         if backLabelOutlet.frame.contains(touch) {
-            actualMainVC.animatePeekingMain()
+            actualMainVC.animatePeekingMainFromHighscore()
         }
     }
     

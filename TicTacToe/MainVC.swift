@@ -20,7 +20,9 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     @IBOutlet weak var visualBoard: UICollectionView!
     @IBOutlet weak var settingsButtonOutlet: UIButton!
     @IBOutlet weak var settingMenuContraint: NSLayoutConstraint!
+    @IBOutlet weak var highscoreMenuContraint: NSLayoutConstraint!
     @IBOutlet weak var resetLabel: UILabel!
+    @IBOutlet weak var highscoreButton: UIImageView!
     
     
     
@@ -30,6 +32,8 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         Game.sharedInstance.setupBoard(self)
         setupGuestureRecongizers()
         updateScoreLabels()
+        
+        highscoreMenuContraint.constant = -view.frame.width
     }
     
     override func didReceiveMemoryWarning() {
@@ -62,12 +66,18 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             view.removeGestureRecognizer(gesture)
         }
         
-        let edgeGuesture = UIScreenEdgePanGestureRecognizer(target: self, action: "edgeGuesture:")
-        edgeGuesture.edges = .Right
-        LongPressGuesture.requireGestureRecognizerToFail(edgeGuesture)
+        let rightEdgeGuesture = UIScreenEdgePanGestureRecognizer(target: self, action: "rightEdgeGuesture:")
+        rightEdgeGuesture.edges = .Right
+        LongPressGuesture.requireGestureRecognizerToFail(rightEdgeGuesture)
+        
+        let leftEdgeGuesture = UIScreenEdgePanGestureRecognizer(target: self, action: "leftEdgeGuesture:")
+        leftEdgeGuesture.edges = .Left
+        LongPressGuesture.requireGestureRecognizerToFail(leftEdgeGuesture)
         
         view.addGestureRecognizer(LongPressGuesture)
-        view.addGestureRecognizer(edgeGuesture)
+        view.addGestureRecognizer(rightEdgeGuesture)
+        view.addGestureRecognizer(leftEdgeGuesture)
+
     }
     
     func pressGuestures(sender: UILongPressGestureRecognizer){
@@ -76,6 +86,7 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         switch sender.state {
         case .Began:
             peekSetting(touch)
+            peekHighScore(touch)
             selectBoard(sender, touchInView: touch)
             touchDownResetLabel(touch)
             break
@@ -94,8 +105,12 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         }
     }
     
-    func edgeGuesture(sender: UIScreenEdgePanGestureRecognizer){
+    func rightEdgeGuesture(sender: UIScreenEdgePanGestureRecognizer){
         animateOpeningSettings()
+    }
+    
+    func leftEdgeGuesture(sender: UIScreenEdgePanGestureRecognizer){
+        animateOpeningHighScore()
     }
     
     func peekSetting(touch:CGPoint){
@@ -103,6 +118,12 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             touchedSettings = true
             firstTouchPonit = touch
             animatePeekingSettings()
+        }
+    }
+    
+    func peekHighScore(touch:CGPoint){
+        if highscoreButton.frame.contains(touch){
+            animatePeekingHighscore()
         }
     }
     
@@ -148,35 +169,6 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         if resetLabel.frame.contains(touch){
             performReset()
         }
-    }
-    
-    func animateClosingSetting() {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.settingMenuContraint.constant = 0
-            self.view.layoutIfNeeded()
-        })
-        updateScoreLabels()
-    }
-    
-    func animatePeekingSettings() {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.settingMenuContraint.constant = -40
-            self.view.layoutIfNeeded()
-        })
-    }
-    
-    func animatePeekingMain() {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.settingMenuContraint.constant = -self.view.frame.width + 40
-            self.view.layoutIfNeeded()
-        })
-    }
-    
-    func animateOpeningSettings() {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.settingMenuContraint.constant = -self.view.frame.width
-            self.view.layoutIfNeeded()
-        })
     }
     
     //MARK: Shake Gestures
@@ -286,5 +278,63 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             }
         playerWinsLabel.text = returnPlayerWinsString
         computerWinsLabel.text = returnComputerWinsString
+    }
+    
+    func animateClosingSetting() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.settingMenuContraint.constant = 0
+            self.view.layoutIfNeeded()
+        })
+        updateScoreLabels()
+    }
+    
+    func animateClosingHighScore() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.highscoreMenuContraint.constant = -self.view.frame.width
+            self.view.layoutIfNeeded()
+        })
+        updateScoreLabels()
+    }
+    
+    func animatePeekingSettings() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.settingMenuContraint.constant = -40
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    func animatePeekingHighscore(){
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.highscoreMenuContraint.constant = -self.view.frame.width + 40
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    func animatePeekingMainFromSettings() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.settingMenuContraint.constant = -self.view.frame.width + 40
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    func animatePeekingMainFromHighscore() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.highscoreMenuContraint.constant = -40
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    func animateOpeningSettings() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.settingMenuContraint.constant = -self.view.frame.width
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    func animateOpeningHighScore() {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.highscoreMenuContraint.constant = 0
+            self.view.layoutIfNeeded()
+        })
     }
 }
