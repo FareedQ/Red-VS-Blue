@@ -313,13 +313,25 @@ class Game: NSObject {
     func displayAlertBasedOnWinResults(results:WinResults) {
         switch results {
         case .WinnerX:
-            alertMessage(title: "Game Over", message: "X Wins")
+            if computerPlayerIsActive {
+            alertMessage(title: "Game Over", message: "What? You must've cheated! I never lose...")
+            } else {
+                alertMessage(title: "Game Over", message: "X Wins")
+            }
             break
         case .WinnerO:
-            alertMessage(title: "Game Over", message: "O Wins")
+            if computerPlayerIsActive {
+                alertMessage(title: "Game Over", message: "Haha, I'm the best and you're a loser!!")
+            } else {
+                alertMessage(title: "Game Over", message: "O Wins")
+            }
             break
         case .EndOfTurns:
-            alertMessage(title:"Game Over", message: "No one wins")
+            if computerPlayerIsActive {
+                alertMessage(title: "Game Over", message: "Really?! You couldn't just let me win.")
+            } else {
+                alertMessage(title:"Game Over", message: "Draw game")
+            }
             break
         case .Error:
             alertMessage(title: "Error", message: "You broke the system!!")

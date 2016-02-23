@@ -10,6 +10,11 @@
     <customFonts key="customFonts">
         <mutableArray key="CFPunkAttitude-Regular.ttf">
             <string>CFPunkAttitude-Regular</string>
+            <string>CFPunkAttitude-Regular</string>
+            <string>CFPunkAttitude-Regular</string>
+            <string>CFPunkAttitude-Regular</string>
+            <string>CFPunkAttitude-Regular</string>
+            <string>CFPunkAttitude-Regular</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -33,7 +38,6 @@
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="XOM-gk-r12">
                                 <rect key="frame" x="36" y="88" width="248" height="248"/>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="XOM-gk-r12" secondAttribute="height" multiplier="1:1" id="SJU-GW-BEl"/>
                                 </constraints>
@@ -88,12 +92,12 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="shake phone to reset board" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="XeU-Ab-Wbv">
                                 <rect key="frame" x="56" y="344" width="208" height="25"/>
                                 <fontDescription key="fontDescription" name="ChalkboardSE-Regular" family="Chalkboard SE" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="1" green="0.96065624270000005" blue="0.87948795769999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wins" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E5A-p6-ZD2">
-                                <rect key="frame" x="122" y="372" width="77" height="38"/>
-                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="30"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="wins" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E5A-p6-ZD2">
+                                <rect key="frame" x="124" y="380" width="72" height="30"/>
+                                <fontDescription key="fontDescription" name="CFPunkAttitude-Regular" family="CF Punk Attitude" pointSize="30"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -128,7 +132,7 @@
                                 </connections>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.94687023950000004" green="0.2492183197" blue="0.99921715259999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="XOM-gk-r12" firstAttribute="centerX" secondItem="v6w-gI-c4U" secondAttribute="centerX" id="1yA-Ii-sSD"/>
                             <constraint firstItem="Yj9-Pj-Yqh" firstAttribute="top" secondItem="yBQ-tX-3kU" secondAttribute="bottom" id="3Ta-uI-20w"/>
@@ -255,9 +259,9 @@
                                 <color key="textColor" red="0.097964145239999995" green="0.96678012609999997" blue="0.15366286039999999" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Back 2 Game" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Uoo-4y-PEm">
-                                <rect key="frame" x="32" y="389" width="256" height="51"/>
-                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="40"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="back" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Uoo-4y-PEm">
+                                <rect key="frame" x="32" y="399" width="256" height="41"/>
+                                <fontDescription key="fontDescription" name="CFPunkAttitude-Regular" family="CF Punk Attitude" pointSize="40"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -279,12 +283,12 @@
                                 <color key="textColor" red="0.097964145239999995" green="0.96678012609999997" blue="0.15366286039999999" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="yqf-cz-NO1">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="yqf-cz-NO1">
                                 <rect key="frame" x="74" y="20" width="172" height="62"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="62" id="eVJ-e2-4be"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="40"/>
+                                <fontDescription key="fontDescription" name="CFPunkAttitude-Regular" family="CF Punk Attitude" pointSize="40"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -348,19 +352,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Back 2 Game" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Y43-sC-E2G">
-                                <rect key="frame" x="32" y="389" width="256" height="51"/>
-                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="40"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="back" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Y43-sC-E2G">
+                                <rect key="frame" x="32" y="399" width="256" height="41"/>
+                                <fontDescription key="fontDescription" name="CFPunkAttitude-Regular" family="CF Punk Attitude" pointSize="40"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="High Score" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="dQb-B2-bVg">
-                                <rect key="frame" x="44" y="20" width="232" height="62"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="high score" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="dQb-B2-bVg">
+                                <rect key="frame" x="55" y="20" width="211" height="62"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="62" id="3OQ-mt-pPq"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="62" id="rWZ-2j-kQA"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="40"/>
+                                <fontDescription key="fontDescription" name="CFPunkAttitude-Regular" family="CF Punk Attitude" pointSize="40"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
