@@ -338,5 +338,6 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             self.highscoreMenuContraint.constant = 0
             self.view.layoutIfNeeded()
         })
+        myHighscoreVC!.displayScores()
     }
 }

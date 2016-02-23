@@ -14,10 +14,16 @@ class HighscoreVC: UIViewController {
     
     @IBOutlet weak var backButton: UILabel!
     
+    @IBOutlet weak var playerScore: UILabel!
+    @IBOutlet weak var hardScore: UILabel!
+    @IBOutlet weak var mediumScore: UILabel!
+    @IBOutlet weak var easyScore: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupGuestureRecongizers()
+        displayScores()
     }
 
     override func didReceiveMemoryWarning() {
@@ -74,6 +80,14 @@ class HighscoreVC: UIViewController {
         } else {
             actualMainVC.animateOpeningHighScore()
         }
+    }
+    
+    func displayScores(){
+        playerScore.text = "\(HighScore.sharedInstance.getData(.PlayerX)) -  \(HighScore.sharedInstance.getData(.PlayerO))"
+        hardScore.text = "\(HighScore.sharedInstance.getData(.HardPlayer)) -  \(HighScore.sharedInstance.getData(.HardComputer))"
+        mediumScore.text = "\(HighScore.sharedInstance.getData(.MediumPlayer)) -  \(HighScore.sharedInstance.getData(.MediumComputer))"
+        easyScore.text = "\(HighScore.sharedInstance.getData(.EasyPlayer)) -  \(HighScore.sharedInstance.getData(.EasyComputer))"
+        
     }
     
 }
