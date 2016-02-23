@@ -92,12 +92,12 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             break
             
         case .Changed:
-            touchMovedLeft(touch)
             break
             
         case .Ended:
-            openSetting()
+            touchUpSetting(touch)
             touchUpResetLabel(touch)
+            touchUpHighscore(touch)
             break
             
         default:
@@ -115,8 +115,6 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     
     func peekSetting(touch:CGPoint){
         if settingsButtonOutlet.frame.contains(touch) {
-            touchedSettings = true
-            firstTouchPonit = touch
             animatePeekingSettings()
         }
     }
@@ -141,33 +139,26 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         }
     }
     
-    func touchMovedLeft(touch:CGPoint){
-        if touchedSettings {
-            settingMenuContraint.constant = (touch.x - view.frame.width)
-            if touch.x < firstTouchPonit.x {
-                confirmedOpenSettings = true
-            } else {
-                confirmedOpenSettings = false
-            }
+    func touchUpSetting(touch:CGPoint){
+        if settingsButtonOutlet.frame.contains(touch){
+            animateOpeningSettings()
+        } else {
+            animateClosingSetting()
         }
-    }
-    
-    func openSetting(){
-        if touchedSettings {
-            if confirmedOpenSettings {
-                animateOpeningSettings()
-            } else {
-                animateClosingSetting()
-            }
-        }
-        confirmedOpenSettings = false
-        touchedSettings = false
     }
     
     func touchUpResetLabel(touch:CGPoint){
         resetLabel.alpha = 1
         if resetLabel.frame.contains(touch){
             performReset()
+        }
+    }
+    
+    func touchUpHighscore(touch:CGPoint){
+        if highscoreButton.frame.contains(touch){
+            animateOpeningHighScore()
+        } else {
+            animateClosingHighScore()
         }
     }
     
