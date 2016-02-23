@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		012CD43E1C7BD9A70099F0DA /* HighscoreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012CD43D1C7BD9A60099F0DA /* HighscoreVC.swift */; };
+		012CD4401C7BE2E80099F0DA /* CFPunkAttitude-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 012CD43F1C7BE21E0099F0DA /* CFPunkAttitude-Regular.ttf */; };
 		015D73C31C6079B6001F0117 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015D73C21C6079B6001F0117 /* Board.swift */; };
 		015D73C51C607C67001F0117 /* Enums & Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015D73C41C607C67001F0117 /* Enums & Structs.swift */; };
 		0163235F1C6159F9002E3EB5 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0163235E1C6159F8002E3EB5 /* SettingsVC.swift */; };
@@ -48,6 +49,7 @@
 
 /* Begin PBXFileReference section */
 		012CD43D1C7BD9A60099F0DA /* HighscoreVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighscoreVC.swift; sourceTree = "<group>"; };
+		012CD43F1C7BE21E0099F0DA /* CFPunkAttitude-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CFPunkAttitude-Regular.ttf"; sourceTree = "<group>"; };
 		015D73C21C6079B6001F0117 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		015D73C41C607C67001F0117 /* Enums & Structs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Enums & Structs.swift"; sourceTree = "<group>"; };
 		0163235E1C6159F8002E3EB5 /* SettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				0172116E1C670F6A0018ED37 /* O.wav */,
 				0172116C1C670F630018ED37 /* X.wav */,
 				016936211C4EDF9E003858AC /* Info.plist */,
+				012CD43F1C7BE21E0099F0DA /* CFPunkAttitude-Regular.ttf */,
 			);
 			name = resources;
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				012CD4401C7BE2E80099F0DA /* CFPunkAttitude-Regular.ttf in Resources */,
 				0172116D1C670F630018ED37 /* X.wav in Resources */,
 				0172116F1C670F6A0018ED37 /* O.wav in Resources */,
 				016936201C4EDF9E003858AC /* LaunchScreen.storyboard in Resources */,
