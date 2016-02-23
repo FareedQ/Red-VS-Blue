@@ -283,6 +283,11 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             self.view.layoutIfNeeded()
         })
         updateScoreLabels()
+        
+        if mySettingVC!.resetBoardUponReturn {
+            Game.sharedInstance.resetBoard()
+            mySettingVC!.resetBoardUponReturn = false
+        }
     }
     
     func animateClosingHighScore() {

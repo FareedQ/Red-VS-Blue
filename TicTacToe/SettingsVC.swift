@@ -39,9 +39,7 @@ class SettingsVC: UIViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "exitSegue" && resetBoardUponReturn {
-            Game.sharedInstance.resetBoard()
-        }
+
     }
     
     //MARK: GuestureRecongizer
@@ -123,6 +121,7 @@ class SettingsVC: UIViewController {
             easyLabel.textColor = UIColor.greenColor()
         }
         
+        resetBoardUponReturn = true
     }
     
     func toggleSound(touch:CGPoint) {
