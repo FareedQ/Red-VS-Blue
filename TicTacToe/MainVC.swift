@@ -16,6 +16,7 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     @IBOutlet weak var playerWinsLabel: UILabel!
     
     weak var mySettingVC:SettingsVC?
+    weak var myHighscoreVC:HighscoreVC?
     
     @IBOutlet weak var visualBoard: UICollectionView!
     @IBOutlet weak var settingsButtonOutlet: UIButton!
@@ -46,6 +47,11 @@ class MainVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             guard let tempVC = segue.destinationViewController as? SettingsVC else {return}
             mySettingVC = tempVC
             mySettingVC?.myMainVC = self
+        }
+        if segue.identifier == "segueHighscore" {
+            guard let tempVC = segue.destinationViewController as? HighscoreVC else {return}
+            myHighscoreVC = tempVC
+            myHighscoreVC?.myMainVC = self
         }
     }
     

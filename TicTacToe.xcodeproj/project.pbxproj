@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		012CD43E1C7BD9A70099F0DA /* HighscoreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012CD43D1C7BD9A60099F0DA /* HighscoreVC.swift */; };
 		015D73C31C6079B6001F0117 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015D73C21C6079B6001F0117 /* Board.swift */; };
 		015D73C51C607C67001F0117 /* Enums & Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015D73C41C607C67001F0117 /* Enums & Structs.swift */; };
 		0163235F1C6159F9002E3EB5 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0163235E1C6159F8002E3EB5 /* SettingsVC.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		012CD43D1C7BD9A60099F0DA /* HighscoreVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighscoreVC.swift; sourceTree = "<group>"; };
 		015D73C21C6079B6001F0117 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		015D73C41C607C67001F0117 /* Enums & Structs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Enums & Structs.swift"; sourceTree = "<group>"; };
 		0163235E1C6159F8002E3EB5 /* SettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 			children = (
 				016936121C4EDF9E003858AC /* AppDelegate.swift */,
 				016936141C4EDF9E003858AC /* MainVC.swift */,
+				012CD43D1C7BD9A60099F0DA /* HighscoreVC.swift */,
 				0163235E1C6159F8002E3EB5 /* SettingsVC.swift */,
 				016936451C4EE4BA003858AC /* SelectionCell.swift */,
 				017672C81C626CF800BEE8E7 /* Game.swift */,
@@ -336,6 +339,7 @@
 				015D73C31C6079B6001F0117 /* Board.swift in Sources */,
 				01AE5F2E1C641E2300D77716 /* ArtificialIntelligence.swift in Sources */,
 				017672C91C626CF800BEE8E7 /* Game.swift in Sources */,
+				012CD43E1C7BD9A70099F0DA /* HighscoreVC.swift in Sources */,
 				016936131C4EDF9E003858AC /* AppDelegate.swift in Sources */,
 				0163235F1C6159F9002E3EB5 /* SettingsVC.swift in Sources */,
 			);
