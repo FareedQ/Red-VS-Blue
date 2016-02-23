@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 class HighscoreVC: UIViewController {
 
@@ -18,6 +19,7 @@ class HighscoreVC: UIViewController {
     @IBOutlet weak var hardScore: UILabel!
     @IBOutlet weak var mediumScore: UILabel!
     @IBOutlet weak var easyScore: UILabel!
+    @IBOutlet weak var resetScore: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +55,7 @@ class HighscoreVC: UIViewController {
             break
         case .Ended:
             touchUpBack(touch)
+            touchResetScore(touch)
             break
         default:
             break
@@ -79,6 +82,25 @@ class HighscoreVC: UIViewController {
             actualMainVC.animateClosingHighScore()
         } else {
             actualMainVC.animateOpeningHighScore()
+        }
+    }
+    
+    
+    func touchResetScore(touch:CGPoint) {
+        if resetScore.frame.contains(touch) {
+            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+            
+            let alert = UIAlertController(title: "Caution", message: "This operation will reset the high score board and is not reversable", preferredStyle: .Alert)
+            let save = UIAlertAction(title: "Okay", style: .Default) {
+                (alertAction:UIAlertAction) -> Void in
+                HighScore.sharedInstance.resetAllScores()
+                self.displayScores()
+            }
+            let cancel = UIAlertAction(title: "Cancel", style: .Default) { (UIAlertAction) -> Void in
+            }
+            alert.addAction(save)
+            alert.addAction(cancel)
+            presentViewController(alert, animated: true, completion: nil)
         }
     }
     

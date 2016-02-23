@@ -24,6 +24,8 @@ class Game: NSObject {
     var difficultyFlag:difficultyType = .Hard
     var tilesPerRow = 3
     
+    var resetFlag = false
+    
     var winningConditions = [
         [0,1,2],
         [3,4,5],
@@ -95,6 +97,8 @@ class Game: NSObject {
         turnCount = 0
         memoryBoard = Board(board: [:])
         visualBoard?.reloadData()
+        resetFlag = true
+        lockSelectionForComputersTurn = false
     }
     
     func setupTiles(tileId:Int){
@@ -146,6 +150,7 @@ class Game: NSObject {
     func executeSelection(tileId:Int) -> WinResults {
         guard let myControllingView = controllingView else { return .Error }
         
+        resetFlag = false
         collectTile(tileId)
         myControllingView.displayPlayer(tileId)
         let stateOfGame = isGameOver()
@@ -199,10 +204,12 @@ class Game: NSObject {
         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         
         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
-            self.lockSelectionForComputersTurn = false
-            let computersChoice = self.HAL9000.chooseTile()
-            let results = self.executeSelection(computersChoice)
-            self.displayAlertBasedOnWinResults(results)
+            if !self.resetFlag {
+                self.lockSelectionForComputersTurn = false
+                let computersChoice = self.HAL9000.chooseTile()
+                let results = self.executeSelection(computersChoice)
+                self.displayAlertBasedOnWinResults(results)
+            }
         })
     }
 

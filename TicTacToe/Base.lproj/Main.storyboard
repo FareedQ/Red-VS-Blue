@@ -453,6 +453,7 @@
                         <outlet property="hardScore" destination="wcm-0y-uY0" id="jks-Xy-sfa"/>
                         <outlet property="mediumScore" destination="TWR-Nk-rPw" id="5jy-fF-mpx"/>
                         <outlet property="playerScore" destination="a3N-3P-xHZ" id="bKA-aR-wSk"/>
+                        <outlet property="resetScore" destination="SoM-pw-B4a" id="gwy-d7-Vrr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZIa-HF-7Pr" userLabel="First Responder" sceneMemberID="firstResponder"/>
